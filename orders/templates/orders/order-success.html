@@ -1,0 +1,52 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+
+{% block content %}
+    <section class="ftco-section bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 text-center">
+                    <div class="p-4 p-md-5 bg-white shadow-sm">
+                        <div class="mb-4">
+                            <span class="icon-check_circle" style="font-size: 60px; color: #28a745;"></span>
+                        </div>
+                        <h3 class="mb-3">Thank you for your order!</h3>
+                        <p class="mb-3">
+                            Your order has been placed successfully.
+                            We will contact you soon to confirm and deliver the products.
+                        </p>
+
+                        <!-- Dummy data, sau này thay bằng dữ liệu thật -->
+                        <p class="mb-1">
+                            <strong>Order code:</strong> \#1005
+                        </p>
+                        <p class="mb-1">
+                            <strong>Total:</strong> 350.000 đ
+                        </p>
+                        <p class="mb-4">
+                            <strong>Date:</strong> 02/12/2024 14:30
+                        </p>
+
+                        <p class="mb-4">
+                            A confirmation email will be sent to: <strong>user@example.com</strong>
+                        </p>
+
+                        <p class="mb-0">
+                            <a href="{% url 'index' %}" class="btn btn-primary py-2 px-4 mr-2">
+                                Continue shopping
+                            </a>
+                            <a href="{% url 'order-history' %}" class="btn btn-outline-secondary py-2 px-4">
+                                View order history
+                            </a>
+                        </p>
+                    </div>
+
+                    <p class="text-muted mt-4">
+                        \* This is a sample success page. Real order information will be filled after integrating the
+                        database.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

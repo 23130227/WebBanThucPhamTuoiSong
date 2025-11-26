@@ -1,0 +1,80 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="hero-wrap hero-bread" style="background-image: url({% static 'images/bg_1.jpg' %});">
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-center justify-content-center">
+                <div class="col-md-9 ftco-animate text-center">
+                    <p class="breadcrumbs"><span class="mr-2"><a
+                            href="../../../pages/templates/pages/index.html">Home</a></span> <span>Register</span>
+                    </p>
+                    <h1 class="mb-0 bread">Register</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="ftco-section bg-light">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-md-7 text-center heading-section ftco-animate">
+                    <span class="subheading">Join us</span>
+                    <h2 class="mb-4">Fresh food, fresh account</h2>
+                    <p>Register to start shopping organic products and receive exclusive offers.</p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-7">
+                    <div class="card border-0 shadow ftco-animate">
+                        <div class="card-body p-4 p-md-5">
+                            <form method="post" class="contact-form">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="full_name">Full name</label>
+                                    <input id="full_name" name="full_name" type="text" class="form-control"
+                                           placeholder="Nguyen Van A" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email address</label>
+                                    <input id="email" name="email" type="email" class="form-control"
+                                           placeholder="you@example.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone number</label>
+                                    <input id="phone" name="phone" type="tel" class="form-control"
+                                           placeholder="+84 912 345 678">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password1">Password</label>
+                                    <input id="password1" name="password1" type="password" class="form-control"
+                                           placeholder="********" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password2">Confirm password</label>
+                                    <input id="password2" name="password2" type="password" class="form-control"
+                                           placeholder="********" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">Delivery address</label>
+                                    <textarea id="address" name="address" class="form-control" rows="3"
+                                              placeholder="Street, ward, district" required></textarea>
+                                </div>
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="agree" required>
+                                        <label class="custom-control-label" for="agree">I agree to terms &amp;
+                                            policies</label>
+                                    </div>
+                                    <a href="{% url 'login' %}" class="text-primary">Already have an account?</a>
+                                </div>
+                                <div class="form-group text-center mt-4">
+                                    <button type="submit" class="btn btn-primary py-3 px-5">Register now</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
