@@ -1,0 +1,75 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="hero-wrap hero-bread" style="background-image: url({% static 'images/bg_1.jpg' %});">
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-center justify-content-center">
+                <div class="col-md-9 ftco-animate text-center">
+                    <p class="breadcrumbs"><span class="mr-2"><a
+                            href="../../../pages/templates/pages/index.html">Home</a></span> <span>Order history</span>
+                    </p>
+                    <h1 class="mb-0 bread">Order history</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="ftco-section bg-light">
+        <div class="container">
+            <div class="table-responsive mb-4">
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Order code</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Total</th>
+                        <th>Detail</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Dummy order 1 -->
+                    <tr>
+                        <td>1</td>
+                        <td>1001</td>
+                        <td>01/12/2024 10:30</td>
+                        <td>Completed</td>
+                        <td>350.000 đ</td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-primary">View</a>
+                        </td>
+                    </tr>
+                    <!-- Dummy order 2 -->
+                    <tr>
+                        <td>2</td>
+                        <td>1002</td>
+                        <td>28/11/2024 15:20</td>
+                        <td>Processing</td>
+                        <td>220.000 đ</td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-primary">View</a>
+                        </td>
+                    </tr>
+                    <!-- Dummy order 3 -->
+                    <tr>
+                        <td>3</td>
+                        <td>1003</td>
+                        <td>20/11/2024 09:05</td>
+                        <td>Cancelled</td>
+                        <td>150.000 đ</td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-primary">View</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="text-muted">
+                \* This is a sample order history. Real data will appear here after integrating the database.
+            </p>
+        </div>
+    </section>
+{% endblock content %}

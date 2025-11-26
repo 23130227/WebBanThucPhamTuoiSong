@@ -1,0 +1,97 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="hero-wrap hero-bread" style="background-image: url({% static 'images/bg_1.jpg' %});">
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-center justify-content-center">
+                <div class="col-md-9 ftco-animate text-center">
+                    <p class="breadcrumbs"><span class="mr-2"><a
+                            href="../../../pages/templates/pages/index.html">Home</a></span> <span>Profile</span>
+                    </p>
+                    <h1 class="mb-0 bread">Profile</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="ftco-section bg-light">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-md-8 text-center heading-section ftco-animate">
+                    <span class="subheading">Hello again</span>
+                    <h2 class="mb-4">Manage your account</h2>
+                    <p>Update contact details, delivery addresses, and review your membership status.</p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="row">
+                        <div class="col-md-5 mb-4">
+                            <div class="card border-0 shadow ftco-animate h-100">
+                                <div class="card-body text-center p-4">
+                                    <img src="{% static 'images/person_1.jpg' %}" alt="Avatar"
+                                         class="rounded-circle mb-3" width="110">
+                                    <h4 class="mb-1">{{ user.get_full_name|default:user.username }}</h4>
+                                    <p class="text-muted mb-3">{{ user.email }}</p>
+                                    <ul class="list-unstyled text-left small">
+                                        <li class="mb-2"><span
+                                                class="icon icon-map-marker mr-2"></span>{{ profile.address|default:'No address set' }}
+                                        </li>
+                                        <li class="mb-2"><span
+                                                class="icon icon-phone mr-2"></span>{{ profile.phone|default:'No phone' }}
+                                        </li>
+                                        <li><span class="icon icon-calendar mr-2"></span>Member
+                                            since {{ user.date_joined|date:"F Y" }}</li>
+                                    </ul>
+                                    <a href="#" class="btn btn-outline-primary btn-sm mt-3">View
+                                        orders</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 mb-4">
+                            <div class="card border-0 shadow ftco-animate h-100">
+                                <div class="card-body p-4">
+                                    <h5 class="mb-4">Edit details</h5>
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="full_name">Full name</label>
+                                            <input id="full_name" name="full_name" class="form-control"
+                                                   value="">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone">Phone number</label>
+                                            <input id="phone" name="phone" class="form-control"
+                                                   value="{{ profile.phone }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="address">Delivery address</label>
+                                            <textarea id="address" name="address" class="form-control"
+                                                      rows="3">{{ profile.address }}</textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="bio">Short bio</label>
+                                            <textarea id="bio" name="bio" class="form-control"
+                                                      rows="2">{{ profile.bio }}</textarea>
+                                        </div>
+                                        <div class="form-group text-right">
+                                            <button type="submit" class="btn btn-primary px-4">Save changes</button>
+                                        </div>
+                                    </form>
+                                    <hr>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">Security</h6>
+                                            <small>Need a new password? Update it here.</small>
+                                        </div>
+                                        <a href="#" class="btn btn-link">Change password</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
