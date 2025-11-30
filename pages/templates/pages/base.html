@@ -72,20 +72,22 @@
                            data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">Shop</a>
                         <div class="dropdown-menu" aria-labelledby="dropdown04">
-                            <a class="dropdown-item" href="{% url 'shop' %}">Shop</a>
-                            <a class="dropdown-item" href="{% url 'wishlist' %}">Wishlist</a>
-                            <a class="dropdown-item" href="../../../products/templates/products/product-single.html">Single
-                                Product</a>
-                            <a class="dropdown-item" href="../../../cart/templates/cart/cart.html">Cart</a>
-                            <a class="dropdown-item" href="../../../cart/templates/cart/checkout.html">Checkout</a>
+                            <a class="dropdown-item" href="{% url 'shop' %}">All</a>
+                            <a class="dropdown-item" href="{% url 'shop' %}">Vegetables</a>
+                            <a class="dropdown-item" href="{% url 'shop' %}">Fruits</a>
+                            <a class="dropdown-item" href="{% url 'shop' %}">Juice</a>
+                            <a class="dropdown-item" href="{% url 'shop' %}">Dried</a>
                         </div>
                     </li>
                     <li class="nav-item"><a href="{% url 'about' %}" class="nav-link">About</a></li>
                     <li class="nav-item"><a href="{% url 'blog' %}" class="nav-link">Blog</a></li>
                     <li class="nav-item"><a href="{% url 'contact' %}" class="nav-link">Contact</a></li>
+                    <li class="nav-item"><a href="{% url 'login' %}" class="nav-link">Login</a></li>
+                    <li class="nav-item"><a href="{% url 'register' %}" class="nav-link">Register</a></li>
+                    <li class="nav-item cta cta-colored"><a href="{% url 'search-results' %}" class="nav-link"><span
+                            class="icon-search"></span></a></li>
                     <li class="nav-item cta cta-colored"><a href="{% url 'cart' %}" class="nav-link"><span
                             class="icon-shopping_cart"></span>[0]</a></li>
-
                 </ul>
             </div>
         </div>
