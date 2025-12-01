@@ -12,7 +12,7 @@ def product_single(request, category_slug, product_slug):
                   {"product": product, "category": category, "related_products": related_products})
 
 
-def shop(request):
+def shop_all_products(request):
     products = Product.objects.all().select_related('category').order_by('name')
     categories = Category.objects.all().order_by('name')
     return render(request, 'products/shop.html',
