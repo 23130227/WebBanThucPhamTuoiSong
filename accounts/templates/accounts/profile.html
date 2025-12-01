@@ -6,9 +6,9 @@
             <div class="row no-gutters slider-text align-items-center justify-content-center">
                 <div class="col-md-9 ftco-animate text-center">
                     <p class="breadcrumbs"><span class="mr-2"><a
-                            href="../../../pages/templates/pages/index.html">Home</a></span> <span>Profile</span>
+                            href="../../../pages/templates/pages/index.html">Trang Chủ</a></span> <span>Thông tin hồ sơ</span>
                     </p>
-                    <h1 class="mb-0 bread">Profile</h1>
+                    <h1 class="mb-0 bread">Thông tin hồ sơ</h1>
                 </div>
             </div>
         </div>
@@ -18,9 +18,9 @@
         <div class="container">
             <div class="row justify-content-center mb-5">
                 <div class="col-md-8 text-center heading-section ftco-animate">
-                    <span class="subheading">Hello again</span>
-                    <h2 class="mb-4">Manage your account</h2>
-                    <p>Update contact details, delivery addresses, and review your membership status.</p>
+                    <span class="subheading">Chào mừng trở lại</span>
+                    <h2 class="mb-4">Quản tài khoản</h2>
+                    <p>Cập nhật thông tin liên hệ, địa chỉ giao hàng và xem trạng thái thành viên của bạn.</p>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -51,40 +51,42 @@
                         <div class="col-md-7 mb-4">
                             <div class="card border-0 shadow ftco-animate h-100">
                                 <div class="card-body p-4">
-                                    <h5 class="mb-4">Edit details</h5>
+                                    <h5 class="mb-4">Chỉnh sửa thông tin</h5>
                                     <form method="post">
                                         {% csrf_token %}
                                         <div class="form-group">
-                                            <label for="full_name">Full name</label>
+                                            <label for="full_name">Họ và tên</label>
                                             <input id="full_name" name="full_name" class="form-control"
                                                    value="">
                                         </div>
                                         <div class="form-group">
-                                            <label for="phone">Phone number</label>
+                                            <label for="phone">Số điện thoại</label>
                                             <input id="phone" name="phone" class="form-control"
                                                    value="{{ profile.phone }}">
                                         </div>
                                         <div class="form-group">
-                                            <label for="address">Delivery address</label>
+                                            <label for="address">Địa chỉ giao hàng</label>
                                             <textarea id="address" name="address" class="form-control"
                                                       rows="3">{{ profile.address }}</textarea>
                                         </div>
                                         <div class="form-group">
-                                            <label for="bio">Short bio</label>
+                                            <label for="bio">Tiểu sử ngắn</label>
                                             <textarea id="bio" name="bio" class="form-control"
                                                       rows="2">{{ profile.bio }}</textarea>
                                         </div>
                                         <div class="form-group text-right">
-                                            <button type="submit" class="btn btn-primary px-4">Save changes</button>
+                                            <button type="submit" class="btn btn-primary px-4">Lưu thay đổi
+
+</button>
                                         </div>
                                     </form>
                                     <hr>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
-                                            <h6 class="mb-1">Security</h6>
-                                            <small>Need a new password? Update it here.</small>
+                                            <h6 class="mb-1">Bảo mật</h6>
+                                            <small>Cần mật khẩu mới? Cập nhật tại đây.</small>
                                         </div>
-                                        <a href="#" class="btn btn-link">Change password</a>
+                                        <a href="#" class="btn btn-link">Đổi mật khẩu</a>
                                     </div>
                                 </div>
                             </div>

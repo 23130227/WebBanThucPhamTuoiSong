@@ -6,7 +6,7 @@ from products.models import Product
 # Create your views here.
 
 def index(request):
-    context = {'products': Product.objects.all()}
+    context = {'products': Product.objects.all().select_related('category').order_by('name')}
     return render(request, 'pages/index.html', context)
 
 
