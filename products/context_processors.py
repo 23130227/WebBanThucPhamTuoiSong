@@ -1,5 +1,5 @@
 from .models import *
 
-def category_list(request):
-    categories = Category.objects.all()
-    return {'category_list': categories}
+
+def categories(request):
+    return {'categories': Category.objects.all().order_by('name')}

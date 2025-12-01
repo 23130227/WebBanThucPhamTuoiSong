@@ -148,21 +148,21 @@
         </div>
         <div class="container">
             <div class="row">
-                {% for p in products %}
+                {% for product in products %}
                     <div class="col-md-6 col-lg-3 ftco-animate">
                         <div class="product">
-                            <a href="{{ p.get_absolute_url }}" class="img-prod"><img class="img-fluid"
-                                                                                     src="{{ p.image.url }}"
-                                                                                     alt="Colorlib Template">
+                            <a href="{{ product.get_absolute_url }}" class="img-prod"><img class="img-fluid"
+                                                                                           src="{{ product.image.url }}"
+                                                                                           alt="Colorlib Template">
                                 <span class="status">30%</span>
                                 <div class="overlay"></div>
                             </a>
                             <div class="text py-3 pb-4 px-3 text-center">
-                                <h3><a href="#">{{ p.name }}</a></h3>
+                                <h3><a href="#">{{ product.name }}</a></h3>
                                 <div class="d-flex">
                                     <div class="pricing">
                                         <p class="price"><span class="mr-2 price-dc">50000₫</span><span
-                                                class="price-sale">{{ p.base_price }}₫</span>
+                                                class="price-sale">{{ product.base_price }}₫</span>
                                         </p>
                                     </div>
                                 </div>
