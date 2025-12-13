@@ -5,7 +5,7 @@ from .models import *
 
 
 # Create your views here.
-def product_single(request, category_slug, product_slug):
+def product_single_view(request, category_slug, product_slug):
     category = get_object_or_404(Category, slug=category_slug)
     product = get_object_or_404(Product, slug=product_slug, category=category)
     related_products = (Product.objects.filter(category=category).exclude(pk=product.pk).order_by(Random())[:4])
@@ -13,7 +13,7 @@ def product_single(request, category_slug, product_slug):
                   {"product": product, "related_products": related_products})
 
 
-def shop_all_products(request):
+def shop_all_products_view(request):
     product_list = Product.objects.all().select_related('category').order_by('name')
     categories = Category.objects.all().order_by('name')
 
@@ -28,7 +28,7 @@ def shop_all_products(request):
     })
 
 
-def shop_by_category(request, category_slug):
+def shop_by_category_view(request, category_slug):
     category = get_object_or_404(Category, slug=category_slug)
     product_list = Product.objects.filter(category=category).order_by('name')
     categories = Category.objects.all().order_by('name')
@@ -39,6 +39,6 @@ def shop_by_category(request, category_slug):
                   {'products': products, 'categories': categories, 'current_category': category})
 
 
-def search_results(request):
+def search_results_view(request):
     context = {}
     return render(request, 'products/search-results.html', context)

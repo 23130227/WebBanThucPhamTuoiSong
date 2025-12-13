@@ -30,35 +30,55 @@
                             <form method="post" class="contact-form">
                                 {% csrf_token %}
                                 <div class="form-group">
-                                    <label for="full_name">Full name</label>
-                                    <input id="full_name" name="full_name" type="text" class="form-control"
+                                    <label for="username">Username</label>
+                                    <input id="username" name="username" type="text" class="form-control"
+                                           placeholder="nguyenvana" required>
+                                </div>
+                                {% if form.username.errors %}
+                                    <div class="text-danger">
+                                        {{ form.username.errors }}
+                                    </div>
+                                {% endif %}
+                                <div class="form-group">
+                                    <label for="first_name">Full name</label>
+                                    <input id="first_name" name="first_name" type="text" class="form-control"
                                            placeholder="Nguyen Van A" required>
                                 </div>
+                                {% if form.first_name.errors %}
+                                    <div class="text-danger">
+                                        {{ form.first_name.errors }}
+                                    </div>
+                                {% endif %}
                                 <div class="form-group">
                                     <label for="email">Email address</label>
                                     <input id="email" name="email" type="email" class="form-control"
                                            placeholder="you@example.com" required>
                                 </div>
-                                <div class="form-group">
-                                    <label for="phone">Phone number</label>
-                                    <input id="phone" name="phone" type="tel" class="form-control"
-                                           placeholder="+84 912 345 678">
-                                </div>
+                                {% if form.email.errors %}
+                                    <div class="text-danger">
+                                        {{ form.email.errors }}
+                                    </div>
+                                {% endif %}
                                 <div class="form-group">
                                     <label for="password1">Password</label>
                                     <input id="password1" name="password1" type="password" class="form-control"
                                            placeholder="********" required>
                                 </div>
+                                {% if form.password1.errors %}
+                                    <div class="text-danger">
+                                        {{ form.password1.errors }}
+                                    </div>
+                                {% endif %}
                                 <div class="form-group">
                                     <label for="password2">Confirm password</label>
                                     <input id="password2" name="password2" type="password" class="form-control"
                                            placeholder="********" required>
                                 </div>
-                                <div class="form-group">
-                                    <label for="address">Delivery address</label>
-                                    <textarea id="address" name="address" class="form-control" rows="3"
-                                              placeholder="Street, ward, district" required></textarea>
-                                </div>
+                                {% if form.password2.errors %}
+                                    <div class="text-danger">
+                                        {{ form.password2.errors }}
+                                    </div>
+                                {% endif %}
                                 <div class="form-group d-flex align-items-center justify-content-between">
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" id="agree" required>
