@@ -73,6 +73,110 @@
         </div>
     </section>
 
+    <!-- Product Reviews Section -->
+    <section class="ftco-section bg-light">
+        <div class="container">
+            <div class="row justify-content-center mb-5 pb-3">
+                <div class="col-md-12 heading-section text-center ftco-animate">
+                    <span class="subheading">Feedback</span>
+                    <h2 class="mb-4">Đánh giá sản phẩm</h2>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Review Form -->
+                <div class="col-md-5 ftco-animate">
+                    <div class="p-4 bg-white rounded shadow-sm">
+                        <h4 class="mb-4">Viết đánh giá của bạn</h4>
+                        <form method="post" action="#">
+                            <div class="form-group">
+                                <label for="rating">Đánh giá sao</label>
+                                <div class="rating-input mb-3">
+                                    <input type="radio" id="star5" name="rating" value="5" required>
+                                    <label for="star5"><i class="ion-ios-star"></i></label>
+                                    <input type="radio" id="star4" name="rating" value="4">
+                                    <label for="star4"><i class="ion-ios-star"></i></label>
+                                    <input type="radio" id="star3" name="rating" value="3">
+                                    <label for="star3"><i class="ion-ios-star"></i></label>
+                                    <input type="radio" id="star2" name="rating" value="2">
+                                    <label for="star2"><i class="ion-ios-star"></i></label>
+                                    <input type="radio" id="star1" name="rating" value="1">
+                                    <label for="star1"><i class="ion-ios-star"></i></label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="comment">Nhận xét của bạn</label>
+                                <textarea class="form-control" id="comment" name="comment" rows="5" placeholder="Viết nhận xét của bạn về sản phẩm..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary py-3 px-4">Gửi đánh giá</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Reviews List -->
+                <div class="col-md-7 ftco-animate">
+                    <div class="reviews-list">
+                        <h4 class="mb-4">Tất cả đánh giá (3)</h4>
+
+                        <!-- Review Item 1 -->
+                        <div class="review-item bg-white p-4 mb-3 rounded shadow-sm">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <h5 class="mb-1">Nguyễn Văn A</h5>
+                                    <div class="rating-stars">
+                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
+                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
+                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
+                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
+                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
+                                    </div>
+                                </div>
+                                <small class="text-muted">13/12/2024 10:30</small>
+                            </div>
+                            <p class="mb-0">Sản phẩm rất tươi ngon, đóng gói cẩn thận. Sẽ ủng hộ shop dài dài!</p>
+                        </div>
+
+                        <!-- Review Item 2 -->
+                        <div class="review-item bg-white p-4 mb-3 rounded shadow-sm">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <h5 class="mb-1">Trần Thị B</h5>
+                                    <div class="rating-stars">
+                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
+                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
+                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
+                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
+                                        <span class="text-muted"><i class="ion-ios-star-outline"></i></span>
+                                    </div>
+                                </div>
+                                <small class="text-muted">10/12/2024 14:15</small>
+                            </div>
+                            <p class="mb-0">Chất lượng tốt, giao hàng nhanh. Tuy nhiên giá hơi cao so với chợ.</p>
+                        </div>
+
+                        <!-- Review Item 3 -->
+                        <div class="review-item bg-white p-4 mb-3 rounded shadow-sm">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <h5 class="mb-1">Lê Văn C</h5>
+                                    <div class="rating-stars">
+                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
+                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
+                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
+                                        <span class="text-muted"><i class="ion-ios-star-outline"></i></span>
+                                        <span class="text-muted"><i class="ion-ios-star-outline"></i></span>
+                                    </div>
+                                </div>
+                                <small class="text-muted">08/12/2024 09:00</small>
+                            </div>
+                            <p class="mb-0">Sản phẩm ổn, nhưng lần sau mong shop đóng gói kỹ hơn.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="ftco-section">
         <div class="container">
             <div class="row justify-content-center mb-3 pb-3">
@@ -154,6 +258,41 @@
 {% endblock content %}
 
 {% block scripts %}
+    <style>
+        /* Rating Input Styles */
+        .rating-input {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+        .rating-input input {
+            display: none;
+        }
+        .rating-input label {
+            cursor: pointer;
+            font-size: 24px;
+            color: #ddd;
+            margin-right: 5px;
+            transition: color 0.2s;
+        }
+        .rating-input label:hover,
+        .rating-input label:hover ~ label,
+        .rating-input input:checked ~ label {
+            color: #ffc107;
+        }
+
+        /* Review Item Styles */
+        .review-item {
+            border-left: 3px solid #82ae46;
+        }
+        .rating-stars span {
+            font-size: 14px;
+        }
+        .reviews-list {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+    </style>
     <script>
         $(document).ready(function () {
 
