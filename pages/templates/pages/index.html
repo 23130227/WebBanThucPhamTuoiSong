@@ -166,7 +166,7 @@
                                         {% if tsp.get_discount_percentage != 0 %}
                                             <p class="price"><span
                                                     class="mr-2 price-dc">{{ tsp.base_price }}₫</span><span
-                                                    class="price-sale">{{ tsp.get_promotional_price }}₫</span>
+                                                    class="price-sale">{{ tsp.get_discount_price }}₫</span>
                                             </p>
                                         {% else %}
                                             <p class="price"><span>{{ tsp.base_price }}₫</span></p>

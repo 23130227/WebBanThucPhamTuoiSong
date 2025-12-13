@@ -10,7 +10,7 @@ def product_single(request, category_slug, product_slug):
     product = get_object_or_404(Product, slug=product_slug, category=category)
     related_products = (Product.objects.filter(category=category).exclude(pk=product.pk).order_by(Random())[:4])
     return render(request, "products/product-single.html",
-                  {"product": product, "category": category, "related_products": related_products})
+                  {"product": product, "related_products": related_products})
 
 
 def shop_all_products(request):
@@ -26,6 +26,8 @@ def shop_all_products(request):
         'categories': categories,
         'current_category': None
     })
+
+
 def shop_by_category(request, category_slug):
     category = get_object_or_404(Category, slug=category_slug)
     product_list = Product.objects.filter(category=category).order_by('name')
