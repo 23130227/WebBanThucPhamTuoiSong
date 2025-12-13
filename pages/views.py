@@ -6,7 +6,8 @@ from products.models import Product
 # Create your views here.
 
 def index(request):
-    context = {'products': Product.objects.all().select_related('category').order_by('name')}
+    top_sold_products = Product.objects.active().order_by('-sold_quantity')[:8]
+    context = {'top_sold_products': top_sold_products}
     return render(request, 'pages/index.html', context)
 
 

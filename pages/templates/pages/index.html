@@ -140,7 +140,7 @@
         <div class="container">
             <div class="row justify-content-center mb-3 pb-3">
                 <div class="col-md-12 heading-section text-center ftco-animate">
-                    <span class="subheading">Sản phẩm nổi bật</span>
+                    <span class="subheading">Sản phẩm bán chạy</span>
                     <h2 class="mb-4">Sản phẩm của chúng tôi</h2>
                     <p>Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các vùng đất Vokalia và Consonantia</p>
                 </div>
@@ -148,28 +148,28 @@
         </div>
         <div class="container">
             <div class="row">
-                {% for product in products %}
+                {% for tsp in top_sold_products %}
                     <div class="col-md-6 col-lg-3 ftco-animate">
                         <div class="product">
-                            <a href="{{ product.get_absolute_url }}" class="img-prod"><img class="img-fluid"
-                                                                                           src="{{ product.image.url }}"
+                            <a href="{{ tsp.get_absolute_url }}" class="img-prod"><img class="img-fluid"
+                                                                                           src="{{ tsp.image.url }}"
                                                                                            alt="Colorlib Template">
-                                {% if product.get_discount_percentage != 0 %}
-                                    <span class="status">-{{ product.get_discount_percentage }}%</span>
+                                {% if tsp.get_discount_percentage != 0 %}
+                                    <span class="status">-{{ tsp.get_discount_percentage }}%</span>
                                 {% endif %}
                                 <div class="overlay"></div>
                             </a>
                             <div class="text py-3 pb-4 px-3 text-center">
-                                <h3><a href="#">{{ product.name }}</a></h3>
+                                <h3><a href="#">{{ tsp.name }}</a></h3>
                                 <div class="d-flex">
                                     <div class="pricing">
-                                        {% if product.get_discount_percentage != 0 %}
+                                        {% if tsp.get_discount_percentage != 0 %}
                                             <p class="price"><span
-                                                    class="mr-2 price-dc">{{ product.base_price }}₫</span><span
-                                                    class="price-sale">{{ product.get_promotional_price }}₫</span>
+                                                    class="mr-2 price-dc">{{ tsp.base_price }}₫</span><span
+                                                    class="price-sale">{{ tsp.get_promotional_price }}₫</span>
                                             </p>
                                         {% else %}
-                                            <p class="price"><span>{{ product.base_price }}₫</span></p>
+                                            <p class="price"><span>{{ tsp.base_price }}₫</span></p>
                                         {% endif %}
                                     </div>
                                 </div>
