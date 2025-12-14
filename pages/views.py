@@ -24,3 +24,4 @@ def contact_view(request):
 def wishlist_view(request):
     context = {}
     return render(request, 'pages/wishlist.html', context)
+
