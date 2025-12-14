@@ -58,10 +58,15 @@
 
                                     <!-- Quantity -->
                                     <td class="quantity">
-                                        <input type="text"
-                                           class="form-control text-center"
-                                           value="{{ item.quantity }}"
-                                           readonly>
+                                        <form action="{% url 'update_cart' pid %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="number"
+                                                    name="quantity"
+                                                    min="1"
+                                                    value="{{ item.quantity }}"
+                                                    class="form-control text-center"
+                                                    onchange="this.form.submit()">
+                                        </form>
                                     </td>
 
                                     <!-- Total -->

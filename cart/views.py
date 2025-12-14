@@ -58,3 +58,23 @@ def remove_from_cart(request, product_id):
     request.session.modified = True
 
     return redirect('cart')
+
+def update_cart(request, product_id):
+    if request.method == 'POST':
+        cart = request.session.get('cart', {})
+        pid = str(product_id)
+
+        if pid in cart:
+            try:
+                qty = int(request.POST.get('quantity', 1))
+                if qty > 0:
+                    cart[pid]['quantity'] = qty
+                else:
+                    del cart[pid]
+            except ValueError:
+                pass
+
+        request.session['cart'] = cart
+        request.session.modified = True
+
+    return redirect('cart')
