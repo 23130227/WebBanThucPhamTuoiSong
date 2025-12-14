@@ -24,3 +24,4 @@ def contact(request):
 def wishlist(request):
     context = {}
     return render(request, 'pages/wishlist.html', context)
+
