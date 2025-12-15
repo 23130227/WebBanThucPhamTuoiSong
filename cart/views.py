@@ -13,6 +13,7 @@ def checkout(request):
     context = {}
     return render(request, 'cart/checkout.html', context)
 
+
 def cart(request):
     cart = request.session.get('cart', {})
 
@@ -26,6 +27,7 @@ def cart(request):
         'subtotal': subtotal,
         'total': subtotal
     })
+
 
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -47,6 +49,8 @@ def add_to_cart(request, product_id):
     request.session.modified = True
 
     return redirect(request.META.get('HTTP_REFERER', '/'))
+
+
 def remove_from_cart(request, product_id):
     cart = request.session.get('cart', {})
     pid = str(product_id)
@@ -58,6 +62,7 @@ def remove_from_cart(request, product_id):
     request.session.modified = True
 
     return redirect('cart')
+
 
 def update_cart(request, product_id):
     if request.method == 'POST':
