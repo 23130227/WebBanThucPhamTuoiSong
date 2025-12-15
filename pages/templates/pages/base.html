@@ -81,7 +81,7 @@
                     <li class="nav-item"><a href="{% url 'about' %}" class="nav-link">Về chúng tôi</a></li>
                     <li class="nav-item"><a href="{% url 'blog' %}" class="nav-link">Blog</a></li>
                     <li class="nav-item"><a href="{% url 'contact' %}" class="nav-link">Liên hệ</a></li>
-                    {% if user.is_authenticated and not user.is_staff %}
+                    {% if user.is_authenticated and not user.is_staff and not user.is_superuser %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown04"
                                data-toggle="dropdown"
