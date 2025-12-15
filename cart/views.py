@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, get_object_or_404, redirect
 
 from products.models import Product
@@ -23,7 +23,12 @@ def cart_view(request):
     })
 
 
+def is_normal_user(user):
+    return user.is_authenticated and not user.is_staff and not user.is_superuser
+
+
 @login_required
+@user_passes_test(is_normal_user)
 def checkout_view(request):
     cart = request.session.get('cart')
     if not cart:

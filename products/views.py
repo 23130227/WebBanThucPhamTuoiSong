@@ -1,8 +1,10 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
 from django.db.models import Avg
 from django.db.models.functions import Random
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+
 from .models import *
 
 
@@ -16,16 +18,46 @@ def product_single_view(request, category_slug, product_slug):
     full_star = int(avg_rating) + (1 if avg_rating - int(avg_rating) >= 0.75 else 0)
     half_star = 1 if 0.25 <= avg_rating - int(avg_rating) < 0.75 else 0
     empty_star = 5 - full_star - half_star
+    product.avg_rating = avg_rating
+    product.full_star = range(full_star)
+    product.half_star = half_star
+    product.empty_star = range(empty_star)
+    reviews = product.reviews.all().order_by(
+        '-created_at')
+    for r in reviews:
+        r.stars = range(r.rating)
+        r.empty_stars = range(5 - r.rating)
     related_products = (Product.objects.filter(category=category).exclude(pk=product.pk).order_by(Random())[:4])
     return render(request, "products/product-single.html",
-                  {'product': product, 'avg_rating': avg_rating, 'full_star': range(full_star), 'half_star': half_star,
-                   'empty_star': range(empty_star),
+                  {'product': product, 'reviews': reviews,
                    'related_products': related_products})
 
 
+def is_normal_user(user):
+    return user.is_authenticated and not user.is_staff and not user.is_superuser
+
+
 @login_required
+@user_passes_test(is_normal_user)
 def submit_review(request, product_id):
-    pass
+    product = get_object_or_404(Product, id=product_id)
+    rating = request.POST.get('rating', 0)
+    user = request.user
+    comment = request.POST.get('comment', '').strip()
+    if request.method == 'POST':
+        review, created = Review.objects.get_or_create(
+            product=product,
+            user=user,
+            defaults={'rating': rating, 'comment': comment}
+        )
+        if created:
+            messages.success(request, "Cảm ơn bạn đã gửi đánh giá!")
+        else:
+            review.rating = rating
+            review.comment = comment
+            review.save()
+            messages.success(request, "Đánh giá của bạn đã được cập nhật!")
+    return redirect(product.get_absolute_url())
 
 
 def shop_all_products_view(request):

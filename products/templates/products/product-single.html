@@ -27,15 +27,15 @@
                     <h3>{{ product.name }}</h3>
                     <div class="rating d-flex">
                         <p class="text-left mr-4">
-                            <a href="#" class="mr-2">{{ avg_rating }}</a>
-                            {% if avg_rating > 0 %}
-                                {% for fs in full_star %}
+                            <a href="#" class="mr-2">{{ product.avg_rating | floatformat:1 }}</a>
+                            {% if product.avg_rating > 0 %}
+                                {% for fs in product.full_star %}
                                     <a href="#"><span class="ion-ios-star"></span></a>
                                 {% endfor %}
-                                {% if half_star > 0 %}
+                                {% if product.half_star > 0 %}
                                     <a href="#"><span class="ion-ios-star-half"></span></a>
                                 {% endif %}
-                                {% for es in empty_star %}
+                                {% for es in product.empty_star %}
                                     <a href="#"><span class="ion-ios-star-outline"></span></a>
                                 {% endfor %}
                             {% else %}
@@ -99,6 +99,11 @@
                 <!-- Review Form -->
                 <div class="col-md-5 ftco-animate">
                     <div class="p-4 bg-white rounded shadow-sm">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert-success p-3 mb-3">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
                         <h4 class="mb-4">Viết đánh giá của bạn</h4>
                         <form method="post" action="{% url 'submit-review' product.id %}">
                             {% csrf_token %}
@@ -130,62 +135,33 @@
                 <!-- Reviews List -->
                 <div class="col-md-7 ftco-animate">
                     <div class="reviews-list">
-                        <h4 class="mb-4">Tất cả đánh giá (3)</h4>
+                        <h4 class="mb-4">Tất cả đánh giá ({{ reviews.count }})</h4>
 
                         <!-- Review Item 1 -->
-                        <div class="review-item bg-white p-4 mb-3 rounded shadow-sm">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <div>
-                                    <h5 class="mb-1">Nguyễn Văn A</h5>
-                                    <div class="rating-stars">
-                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
-                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
-                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
-                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
-                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
+                        {% if reviews.exists %}
+                            {% for r in reviews %}
+                                <div class="review-item bg-white p-4 mb-3 rounded shadow-sm">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <div>
+                                            <h5 class="mb-1">{{ r.user.first_name }}</h5>
+                                            <div class="rating-stars">
+                                                {% for s in r.stars %}
+                                                    <span class="text-warning"><i class="ion-ios-star"></i></span>
+                                                {% endfor %}
+                                                {% for es in r.empty_stars %}
+                                                    <span class="text-warning"><i
+                                                            class="ion-ios-star-outline"></i></span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <small class="text-muted">{{ r.created_at }}</small>
                                     </div>
+                                    <p class="mb-0">{{ r.comment }}</p>
                                 </div>
-                                <small class="text-muted">13/12/2024 10:30</small>
-                            </div>
-                            <p class="mb-0">Sản phẩm rất tươi ngon, đóng gói cẩn thận. Sẽ ủng hộ shop dài dài!</p>
-                        </div>
-
-                        <!-- Review Item 2 -->
-                        <div class="review-item bg-white p-4 mb-3 rounded shadow-sm">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <div>
-                                    <h5 class="mb-1">Trần Thị B</h5>
-                                    <div class="rating-stars">
-                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
-                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
-                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
-                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
-                                        <span class="text-muted"><i class="ion-ios-star-outline"></i></span>
-                                    </div>
-                                </div>
-                                <small class="text-muted">10/12/2024 14:15</small>
-                            </div>
-                            <p class="mb-0">Chất lượng tốt, giao hàng nhanh. Tuy nhiên giá hơi cao so với chợ.</p>
-                        </div>
-
-                        <!-- Review Item 3 -->
-                        <div class="review-item bg-white p-4 mb-3 rounded shadow-sm">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <div>
-                                    <h5 class="mb-1">Lê Văn C</h5>
-                                    <div class="rating-stars">
-                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
-                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
-                                        <span class="text-warning"><i class="ion-ios-star"></i></span>
-                                        <span class="text-muted"><i class="ion-ios-star-outline"></i></span>
-                                        <span class="text-muted"><i class="ion-ios-star-outline"></i></span>
-                                    </div>
-                                </div>
-                                <small class="text-muted">08/12/2024 09:00</small>
-                            </div>
-                            <p class="mb-0">Sản phẩm ổn, nhưng lần sau mong shop đóng gói kỹ hơn.</p>
-                        </div>
-
+                            {% endfor %}
+                        {% else %}
+                            <p>Chưa có đánh giá nào cho sản phẩm này.</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>
