@@ -22,7 +22,7 @@ class Product(models.Model):
     quantity = models.IntegerField(validators=[MinValueValidator(0)])
     sold_quantity = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     base_price = models.IntegerField(validators=[MinValueValidator(0)])
-    expiry_date = models.DateField()
+    expiry_date = models.DateTimeField()
     image = models.ImageField(upload_to='products/', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
@@ -37,22 +37,35 @@ class Product(models.Model):
     def get_active_product_discount(self):
         return ProductDiscount.objects.filter(product=self,
                                               start_date__lte=timezone.now(),
-                                              end_date__gte=timezone.now())
+                                              end_date__gte=timezone.now()).first()
 
     def get_active_category_discount(self):
         return CategoryDiscount.objects.filter(category=self.category,
                                                start_date__lte=timezone.now(),
-                                               end_date__gte=timezone.now())
+                                               end_date__gte=timezone.now()).first()
+
+    def get_expiry_discount(self):
+        delta = self.expiry_date - timezone.now()
+        days_to_expiry = delta.total_seconds() / 86400  # 1 ngày = 86400 giây
+
+        return ExpiryDiscount.objects.filter(
+            category=self.category,
+            days_before_expiry__gte=days_to_expiry
+        ).order_by('-days_before_expiry').first()
 
     def get_discount_percentage(self):
+        discount_percentage = 0
         product_discount = self.get_active_product_discount()
         category_discount = self.get_active_category_discount()
+        expiry_discount = self.get_expiry_discount()
 
-        if product_discount.exists():
-            return product_discount.first().discount_percentage
-        elif category_discount.exists():
-            return category_discount.first().discount_percentage
-        return 0
+        if product_discount:
+            discount_percentage = product_discount.discount_percentage
+        elif category_discount:
+            discount_percentage = category_discount.discount_percentage
+        if expiry_discount:
+            discount_percentage = max(discount_percentage, expiry_discount.discount_percentage)
+        return discount_percentage
 
     def get_discount_price(self):
         price = self.base_price
@@ -122,6 +135,17 @@ class CategoryDiscount(models.Model):
         if qs.filter(start_date__lte=self.end_date,
                      end_date__gte=self.start_date).exists():
             raise ValidationError("Khoảng thời gian khuyến mãi của danh mục bị chồng lấp.")
+
+
+class ExpiryDiscount(models.Model):
+    id = models.AutoField(primary_key=True)
+    category = models.ForeignKey('Category', related_name='expiry_discounts', on_delete=models.CASCADE)
+    days_before_expiry = models.PositiveIntegerField()
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=0,
+                                              validators=[MinValueValidator(0.0), MaxValueValidator(100.0)])
+
+    def __str__(self):
+        return f"{self.category.name} Expiry Discount - {self.discount_percentage}% for products expiring in {self.days_before_expiry} days"
 
 
 class Review(models.Model):
