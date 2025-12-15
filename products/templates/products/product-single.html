@@ -27,19 +27,32 @@
                     <h3>{{ product.name }}</h3>
                     <div class="rating d-flex">
                         <p class="text-left mr-4">
-                            <a href="#" class="mr-2">5.0</a>
-                            <a href="#"><span class="ion-ios-star-outline"></span></a>
-                            <a href="#"><span class="ion-ios-star-outline"></span></a>
-                            <a href="#"><span class="ion-ios-star-outline"></span></a>
-                            <a href="#"><span class="ion-ios-star-outline"></span></a>
-                            <a href="#"><span class="ion-ios-star-outline"></span></a>
+                            <a href="#" class="mr-2">{{ avg_rating }}</a>
+                            {% if avg_rating > 0 %}
+                                {% for fs in full_star %}
+                                    <a href="#"><span class="ion-ios-star"></span></a>
+                                {% endfor %}
+                                {% if half_star > 0 %}
+                                    <a href="#"><span class="ion-ios-star-half"></span></a>
+                                {% endif %}
+                                {% for es in empty_star %}
+                                    <a href="#"><span class="ion-ios-star-outline"></span></a>
+                                {% endfor %}
+                            {% else %}
+                                <a href="#"><span class="ion-ios-star-outline"></span></a>
+                                <a href="#"><span class="ion-ios-star-outline"></span></a>
+                                <a href="#"><span class="ion-ios-star-outline"></span></a>
+                                <a href="#"><span class="ion-ios-star-outline"></span></a>
+                                <a href="#"><span class="ion-ios-star-outline"></span></a>
+                            {% endif %}
                         </p>
                         <p class="text-left mr-4">
-                            <a href="#" class="mr-2" style="color: #000;">100 <span
+                            <a href="#" class="mr-2" style="color: #000;">{{ product.reviews.count }} <span
                                     style="color: #bbb;">Rating</span></a>
                         </p>
                         <p class="text-left">
-                            <a href="#" class="mr-2" style="color: #000;">500 <span style="color: #bbb;">Sold</span></a>
+                            <a href="#" class="mr-2" style="color: #000;">{{ product.sold_quantity }} <span
+                                    style="color: #bbb;">Sold</span></a>
                         </p>
                     </div>
                     <p class="price"><span>{{ product.base_price }}₫</span></p>
@@ -87,7 +100,8 @@
                 <div class="col-md-5 ftco-animate">
                     <div class="p-4 bg-white rounded shadow-sm">
                         <h4 class="mb-4">Viết đánh giá của bạn</h4>
-                        <form method="post" action="#">
+                        <form method="post" action="{% url 'submit-review' product.id %}">
+                            {% csrf_token %}
                             <div class="form-group">
                                 <label for="rating">Đánh giá sao</label>
                                 <div class="rating-input mb-3">
