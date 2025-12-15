@@ -66,7 +66,7 @@
                             <p style="color: #000;">{{ product.quantity }} {{ product.unit }} available</p>
                         </div>
                     </div>
-                    <p><a href="../../../cart/templates/cart/cart.html" class="btn btn-black py-3 px-5">Add to Cart</a>
+                    <p><a href="{% url 'add_to_cart' product.id %}" class="btn btn-black py-3 px-5">Add to Cart</a>
                     </p>
                 </div>
             </div>
@@ -105,7 +105,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="comment">Nhận xét của bạn</label>
-                                <textarea class="form-control" id="comment" name="comment" rows="5" placeholder="Viết nhận xét của bạn về sản phẩm..." required></textarea>
+                                <textarea class="form-control" id="comment" name="comment" rows="5"
+                                          placeholder="Viết nhận xét của bạn về sản phẩm..." required></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary py-3 px-4">Gửi đánh giá</button>
                         </form>
@@ -193,8 +194,8 @@
                     <div class="col-md-6 col-lg-3 ftco-animate">
                         <div class="product">
                             <a href="{{ rp.get_absolute_url }}" class="img-prod"><img class="img-fluid"
-                                                                                           src="{{ rp.image.url }}"
-                                                                                           alt="Colorlib Template">
+                                                                                      src="{{ rp.image.url }}"
+                                                                                      alt="Colorlib Template">
                                 {% if rp.get_discount_percentage != 0 %}
                                     <span class="status">-{{ rp.get_discount_percentage }}%</span>
                                 {% endif %}
@@ -265,9 +266,11 @@
             flex-direction: row-reverse;
             justify-content: flex-end;
         }
+
         .rating-input input {
             display: none;
         }
+
         .rating-input label {
             cursor: pointer;
             font-size: 24px;
@@ -275,6 +278,7 @@
             margin-right: 5px;
             transition: color 0.2s;
         }
+
         .rating-input label:hover,
         .rating-input label:hover ~ label,
         .rating-input input:checked ~ label {
@@ -285,9 +289,11 @@
         .review-item {
             border-left: 3px solid #82ae46;
         }
+
         .rating-stars span {
             font-size: 14px;
         }
+
         .reviews-list {
             max-height: 600px;
             overflow-y: auto;

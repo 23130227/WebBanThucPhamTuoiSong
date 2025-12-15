@@ -34,6 +34,11 @@ def login_view(request):
     return render(request, 'accounts/login.html', context)
 
 
+def logout_view(request):
+    logout(request)
+    return redirect('index')
+
+
 def forgot_password_view(request):
     context = {}
     return render(request, 'accounts/forgot-password.html', context)
