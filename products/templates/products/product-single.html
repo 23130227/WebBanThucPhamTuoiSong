@@ -55,7 +55,11 @@
                                     style="color: #bbb;">Sold</span></a>
                         </p>
                     </div>
-                    <p class="price"><span>{{ product.base_price }}₫</span></p>
+                    {% if product.get_discount_percentage != 0 %}
+                        <p class="price"><span>{{ product.get_discount_price }}₫</span></p>
+                    {% else %}
+                        <p class="price"><span>{{ product.base_price }}₫</span></p>
+                    {% endif %}
                     <p>{{ product.description }}
                     </p>
                     <div class="row mt-4">
@@ -192,7 +196,7 @@
                                 <div class="overlay"></div>
                             </a>
                             <div class="text py-3 pb-4 px-3 text-center">
-                                <h3><a href="#">{{ rp.name }}</a></h3>
+                                <h3><a href="{{ rp.get_absolute_url }}">{{ rp.name }}</a></h3>
                                 <div class="d-flex">
                                     <div class="pricing">
                                         {% if rp.get_discount_percentage != 0 %}
