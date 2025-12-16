@@ -147,6 +147,10 @@ class ExpiryDiscount(models.Model):
     def __str__(self):
         return f"{self.category.name} Expiry Discount - {self.discount_percentage}% for products expiring in {self.days_before_expiry} days"
 
+    def clean(self):
+        super().clean()
+        if ExpiryDiscount.objects.filter(category=self.category, days_before_expiry=self.days_before_expiry).exists():
+            raise ValidationError("Đã tồn tại khuyến mãi.")
 
 class Review(models.Model):
     id = models.AutoField(primary_key=True)
