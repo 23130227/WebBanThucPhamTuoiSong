@@ -1,7 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.db import transaction
 from django.shortcuts import render, get_object_or_404, redirect
 
+from cart.forms import CheckoutForm
+from cart.models import Order
 from products.models import Product
 
 
@@ -41,7 +44,8 @@ def checkout_view(request):
     for item in cart.values():
         item['total'] = int(item['price']) * int(item['quantity'])
         subtotal += item['total']
-    return render(request, 'cart/checkout.html', {'cart': cart, 'subtotal': subtotal, 'total': subtotal})
+    form = CheckoutForm()
+    return render(request, 'cart/checkout.html', {'cart': cart, 'subtotal': subtotal, 'total': subtotal, 'form': form})
 
 
 def add_to_cart(request, product_id):
@@ -98,3 +102,44 @@ def update_cart(request, product_id):
         request.session.modified = True
 
     return redirect('cart')
+
+
+@transaction.atomic
+def place_order(request):
+    form = CheckoutForm(request.POST)
+    cart = request.session.get('cart')
+    subtotal = 0
+    delivery = 0
+    discount = 0
+    for item in cart.values():
+        item['total'] = int(item['price']) * int(item['quantity'])
+        subtotal += item['total']
+    if form.is_valid():
+        data = form.cleaned_data
+        order = Order.objects.create(
+            user=request.user,
+            full_name=data['full_name'],
+            phone=data['phone'],
+            city=data['city'],
+            district=data['district'],
+            ward=data['ward'],
+            address=data['address'],
+            note=data['note'],
+            payment_method=data['payment_method'],
+            subtotal=subtotal,
+            delivery=delivery,
+            discount=discount,
+            total=subtotal + delivery - discount
+        )
+        for pid, item in cart.items():
+            order.items.create(
+                product_id=int(pid),
+                product_name=item['name'],
+                product_price=item['price'],
+                quantity=item['quantity'],
+                total=item['total']
+            )
+        del request.session['cart']
+        request.session.modified = True
+        return redirect('order-success')
+    return render(request, 'cart/checkout.html', {'cart': cart, 'subtotal': subtotal, 'total': subtotal, 'form': form})
