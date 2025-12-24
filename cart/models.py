@@ -63,4 +63,4 @@ class OrderItem(models.Model):
     total = models.IntegerField(default=0)
 
     def __str__(self):
-        return f"{self.product_name} (x{self.quantity})"
+        return f"#{self.order_id} | {self.product_name} × {self.quantity}"

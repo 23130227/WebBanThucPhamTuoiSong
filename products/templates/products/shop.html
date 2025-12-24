@@ -19,7 +19,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-10 mb-5 text-center">
                     <ul class="product-category">
-                        <li><a href="{% url 'shop-all-products' %}"
+                        <li><a href="{% url 'shop_all_products' %}"
                                class="{% if current_category == None %} active {% endif %}">All</a></li>
                         {% for c in categories %}
                             <li><a href="{{ c.get_absolute_url }}"

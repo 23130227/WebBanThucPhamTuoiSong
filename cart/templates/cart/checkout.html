@@ -16,7 +16,7 @@
 
     <section class="ftco-section">
         <div class="container">
-            <form action="{% url 'place_order' %}" method="post" class="billing-form">
+            <form method="post" class="billing-form" onsubmit="disableSubmit(this)">
                 {% csrf_token %}
                 <div class="row justify-content-center">
                     <div class="col-xl-7 ftco-animate">
@@ -26,7 +26,8 @@
                                 <div class="form-group">
                                     <label>Họ và tên</label>
                                     <input type="text" name="full_name" class="form-control"
-                                           value="{{ form.full_name.value|default:'' }}" placeholder="">
+                                           value="{{ form.full_name.value|default_if_none:'' }}" placeholder=""
+                                           required>
                                 </div>
                                 {% if form.full_name.errors %}
                                     <div class="text-danger">
@@ -38,7 +39,7 @@
                                 <div class="form-group">
                                     <label>Số điện thoại</label>
                                     <input type="text" name="phone" class="form-control"
-                                           value="{{ form.phone.value|default:'' }}" placeholder="">
+                                           value="{{ form.phone.value|default_if_none:'' }}" placeholder="" required>
                                 </div>
                                 {% if form.phone.errors %}
                                     <div class="text-danger">
@@ -52,7 +53,7 @@
                                     <label>Tỉnh / Thành</label>
                                     <div class="select-wrap">
                                         <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                        <select name="city" id="" class="form-control">
+                                        <select name="city" id="" class="form-control" required>
                                             <option value="">Chọn tỉnh / thành</option>
                                             <option value="Thành phố Hồ Chí Minh">Thành phố Hồ Chí Minh</option>
                                             <option value="Hà Nội">Hà Nội</option>
@@ -72,7 +73,7 @@
                                     <label>Quận / Huyện</label>
                                     <div class="select-wrap">
                                         <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                        <select name="district" id="" class="form-control">
+                                        <select name="district" id="" class="form-control" required>
                                             <option value="">Chọn quận / huyện</option>
                                             <option value="Quận 12">Quận 12</option>
                                             <option value="Quận 1">Quận 1</option>
@@ -91,7 +92,7 @@
                                     <label>Phường / Xã</label>
                                     <div class="select-wrap">
                                         <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                        <select name="ward" id="" class="form-control">
+                                        <select name="ward" id="" class="form-control" required>
                                             <option value="">Chọn phường / xã</option>
                                             <option value="Phường An Phú Đông">Phường An Phú Đông</option>
                                             <option value="Phương An Phú">Phường An Phú</option>
@@ -111,8 +112,7 @@
                                     <label>Địa chỉ cụ thể</label>
                                     <input type="text" name="address" class="form-control"
                                            placeholder="Số nhà, tên đường,..."
-                                           value="{{ form.address.value|default:'' }}"
-                                    >
+                                           value="{{ form.address.value|default_if_none:'' }}" required>
                                 </div>
                                 {% if form.address.errors %}
                                     <div class="text-danger">
@@ -125,7 +125,7 @@
                                 <div class="form-group">
                                     <label for="note">Ghi chú</label>
                                     <textarea name="note" class="form-control" placeholder=""
-                                              rows="2">{{ form.note.value|default:'' }}</textarea>
+                                              rows="2">{{ form.note.value|default_if_none:'' }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -141,11 +141,11 @@
                                     </p>
                                     <p class="d-flex">
                                         <span>Delivery</span>
-                                        <span>0₫</span>
+                                        <span>{{ delivery }}₫</span>
                                     </p>
                                     <p class="d-flex">
                                         <span>Discount</span>
-                                        <span>0₫</span>
+                                        <span>{{ discount }}₫</span>
                                     </p>
                                     <hr>
                                     <p class="d-flex total-price">
@@ -163,7 +163,8 @@
                                                 <div class="radio">
                                                     <label><input type="radio" name="payment_method" class="mr-2"
                                                                   value="{{ value }}"
-                                                                  {% if form.payment_method.value == value %}checked{% endif %}>{{ label }}
+                                                                  {% if form.payment_method.value == value %}checked{% endif %}
+                                                                  required>{{ label }}
                                                     </label>
                                                 </div>
                                             </div>
@@ -185,8 +186,7 @@
                                         </div>
                                     </div>
                                     <p>
-                                        <button type="submit" class="btn btn-primary py-3 px-4"
-                                                onclick="this.disabled=true; this.innerText='Đang xử lý...'; this.form.submit();">
+                                        <button type="submit" class="btn btn-primary py-3 px-4">
                                             Place an order
                                         </button>
                                     </p>

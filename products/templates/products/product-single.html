@@ -113,7 +113,7 @@
                             {% endfor %}
                         {% endif %}
                         <h4 class="mb-4">Viết đánh giá của bạn</h4>
-                        <form method="post" action="{% url 'submit-review' product.id %}">
+                        <form method="post" action="{% url 'submit_review' product.id %}">
                             {% csrf_token %}
                             <div class="form-group">
                                 <label for="rating">Đánh giá sao</label>

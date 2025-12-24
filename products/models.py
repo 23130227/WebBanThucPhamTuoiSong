@@ -32,7 +32,7 @@ class Product(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("product-single", args=[self.category.slug, self.slug])
+        return reverse("product_single", args=[self.category.slug, self.slug])
 
     def get_active_product_discount(self):
         return ProductDiscount.objects.filter(product=self,
@@ -84,7 +84,7 @@ class Category(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("shop-by-category", args=[self.slug])
+        return reverse("shop_by_category", args=[self.slug])
 
 
 class ProductDiscount(models.Model):
@@ -151,6 +151,7 @@ class ExpiryDiscount(models.Model):
         super().clean()
         if ExpiryDiscount.objects.filter(category=self.category, days_before_expiry=self.days_before_expiry).exists():
             raise ValidationError("Đã tồn tại khuyến mãi.")
+
 
 class Review(models.Model):
     id = models.AutoField(primary_key=True)
