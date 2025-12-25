@@ -43,10 +43,10 @@ class Order(models.Model):
         choices=PAYMENT_METHOD_CHOICES,
         default='cod'
     )
-    subtotal = models.IntegerField(default=0)
-    delivery = models.IntegerField(default=0)
-    discount = models.IntegerField(default=0)
-    total = models.IntegerField(default=0)
+    subtotal = models.PositiveIntegerField(default=0)
+    delivery = models.PositiveIntegerField(default=0)
+    discount = models.PositiveIntegerField(default=0)
+    total = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -59,8 +59,8 @@ class OrderItem(models.Model):
     product = models.ForeignKey('products.Product', related_name='order_items', on_delete=models.PROTECT)
     product_name = models.CharField(max_length=200)
     product_price = models.IntegerField()
-    quantity = models.IntegerField(validators=[MinValueValidator(1)])
-    total = models.IntegerField(default=0)
+    quantity = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    total = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f"#{self.order_id} | {self.product_name} × {self.quantity}"

@@ -100,17 +100,18 @@ def checkout_view(request):
 
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
+    quantity = int(request.POST.get('quantity', 1))
 
     cart = request.session.get('cart', {})
     pid = str(product.id)
 
     if pid in cart:
-        cart[pid]['quantity'] += 1
+        cart[pid]['quantity'] += quantity
     else:
         cart[pid] = {
             'name': product.name,
             'price': float(product.get_discount_price()),
-            'quantity': 1,
+            'quantity': quantity,
             'image': product.image.url if product.image else ''
         }
 

@@ -22,11 +22,11 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('pages.urls')),
-    path('san-pham/', include('products.urls')),
-    path('tai-khoan/', include('accounts.urls')),
-    path('gio-hang/', include('cart.urls')),
+    path('product/', include('products.urls')),
+    path('account/', include('accounts.urls')),
+    path('cart/', include('cart.urls')),
     path('blog/', include('blog.urls')),
-    path('don-hang', include('orders.urls')),
+    path('order/', include('orders.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
