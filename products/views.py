@@ -64,7 +64,7 @@ def is_normal_user(user):
 
 def shop_all_products_view(request):
     context = {}
-    product_list = Product.objects.all().select_related('category').order_by('name')
+    product_list = Product.objects.active().all().select_related('category').order_by('name')
     categories = Category.objects.all().order_by('name')
 
     paginator = Paginator(product_list, 16)
@@ -78,7 +78,7 @@ def shop_all_products_view(request):
 def shop_by_category_view(request, category_slug):
     context = {}
     category = get_object_or_404(Category, slug=category_slug)
-    product_list = Product.objects.filter(category=category).order_by('name')
+    product_list = Product.objects.active().filter(category=category).order_by('name')
     categories = Category.objects.all().order_by('name')
     paginator = Paginator(product_list, 16)
     page = request.GET.get('page')

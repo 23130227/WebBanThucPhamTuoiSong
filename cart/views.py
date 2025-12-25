@@ -1,10 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db import transaction
+from django.db.models import F
 from django.shortcuts import render, get_object_or_404, redirect
 
 from cart.forms import CheckoutForm
-from cart.models import Order
+from orders.models import Order
 from products.models import Product
 
 
@@ -44,6 +45,7 @@ def is_normal_user(user):
 @user_passes_test(is_normal_user)
 @transaction.atomic
 def checkout_view(request):
+    context = {}
     cart_data = get_cart_data(request)
 
     if not cart_data['cart']:
@@ -82,11 +84,23 @@ def checkout_view(request):
                     quantity=item['quantity'],
                     total=item['total'],
                 )
+                updated = Product.objects.filter(
+                    id=int(pid),
+                    stock_quantity__gte=item['quantity']
+                ).update(
+                    stock_quantity=F('stock_quantity') - item['quantity'],
+                    sold_quantity=F('sold_quantity') + item['quantity']
+                )
+                if not updated:
+                    messages.error(request, f"Sản phẩm {item['name']} trong kho không đủ")
+                    transaction.set_rollback(True)
+                    return redirect('cart')
 
             del request.session['cart']
             request.session.modified = True
 
-            return redirect('order_success')
+            context = {'order': order}
+            return render(request, 'orders/order-success.html', context)
 
     else:
         form = CheckoutForm()
