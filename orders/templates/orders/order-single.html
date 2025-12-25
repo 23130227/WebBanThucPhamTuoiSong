@@ -7,9 +7,9 @@
             <div class="row no-gutters slider-text align-items-center justify-content-center">
                 <div class="col-md-9 ftco-animate text-center">
                     <p class="breadcrumbs"><span class="mr-2"><a
-                            href="../../../pages/templates/pages/index.html">Home</a></span> <span>Order detail</span>
+                            href="../../../pages/templates/pages/index.html">Home</a></span> <span>Chi tiết đơn hàng</span>
                     </p>
-                    <h1 class="mb-0 bread">Order detail</h1>
+                    <h1 class="mb-0 bread">Chi tiết đơn hàng</h1>
                 </div>
             </div>
         </div>
@@ -20,19 +20,24 @@
             <!-- Order info -->
             <div class="row mb-4">
                 <div class="col-md-6">
-                    <h4>Order information</h4>
+                    <h4>Thông tin đơn hàng</h4>
                     <p>
-                        <strong>Order code:</strong> 1001<br>
-                        <strong>Date:</strong> 01/12/2024 10:30<br>
-                        <strong>Status:</strong> Completed
+                        <strong>Mã đơn hàng:</strong> 1001<br>
+                        <strong>Ngày tạo:</strong> 01/12/2024 10:30<br>
+                        <strong>Trạng thái:</strong> Hoàn thành<br>
+                        <strong>Phương thức thanh toán:</strong> Thanh toán khi nhận hàng<br>
+                        <strong>Ghi chú:</strong> Giao trước 12h
                     </p>
                 </div>
                 <div class="col-md-6 text-md-right">
-                    <h4>Shipping information</h4>
+                    <h4>Thông tin giao hàng</h4>
                     <p>
-                        <strong>Name:</strong> Nguyen Van A<br>
-                        <strong>Phone:</strong> 0900 000 000<br>
-                        <strong>Address:</strong> 123 Tran Hung Dao, District 1, Ho Chi Minh City
+                        <strong>Họ tên:</strong> Nguyễn Văn A<br>
+                        <strong>Số điện thoại:</strong> 0900 000 000<br>
+                        <strong>Thành phố:</strong> TP.HCM<br>
+                        <strong>Quận:</strong> Quận 1<br>
+                        <strong>Phường:</strong> Phường 1<br>
+                        <strong>Địa chỉ:</strong> 123 Trần Hưng Đạo
                     </p>
                 </div>
             </div>
@@ -43,21 +48,17 @@
                     <thead class="thead-dark">
                     <tr>
                         <th>#</th>
-                        <th>Product</th>
-                        <th>Image</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Subtotal</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Thành tiền</th>
                     </tr>
                     </thead>
                     <tbody>
                     <!-- Dummy item 1 -->
                     <tr>
                         <td>1</td>
-                        <td>Fresh spinach</td>
-                        <td style="width: 80px;">
-                            <img src="{% static 'images/product-1.jpg' %}" alt="Fresh spinach" class="img-fluid">
-                        </td>
+                        <td>Rau cải xanh</td>
                         <td>25.000 đ</td>
                         <td>2</td>
                         <td>50.000 đ</td>
@@ -65,10 +66,7 @@
                     <!-- Dummy item 2 -->
                     <tr>
                         <td>2</td>
-                        <td>Organic lettuce</td>
-                        <td>
-                            <img src="{% static 'images/product-2.jpg' %}" alt="Organic lettuce" class="img-fluid">
-                        </td>
+                        <td>Xà lách hữu cơ</td>
                         <td>30.000 đ</td>
                         <td>3</td>
                         <td>90.000 đ</td>
@@ -76,10 +74,7 @@
                     <!-- Dummy item 3 -->
                     <tr>
                         <td>3</td>
-                        <td>Fresh broccoli</td>
-                        <td>
-                            <img src="{% static 'images/product-3.jpg' %}" alt="Fresh broccoli" class="img-fluid">
-                        </td>
+                        <td>Súp lơ xanh</td>
                         <td>40.000 đ</td>
                         <td>2</td>
                         <td>80.000 đ</td>
@@ -92,34 +87,34 @@
             <div class="row justify-content-end">
                 <div class="col-md-5">
                     <div class="cart-total p-3 p-md-4 bg-white">
-                        <h3>Order summary</h3>
+                        <h3>Tóm tắt đơn hàng</h3>
                         <p class="d-flex">
-                            <span>Subtotal</span>
+                            <span>Tạm tính</span>
                             <span>220.000 đ</span>
                         </p>
                         <p class="d-flex">
-                            <span>Shipping fee</span>
+                            <span>Phí giao hàng</span>
                             <span>30.000 đ</span>
                         </p>
                         <p class="d-flex">
-                            <span>Discount</span>
+                            <span>Giảm giá</span>
                             <span>0 đ</span>
                         </p>
                         <hr>
                         <p class="d-flex total-price">
-                            <span>Total</span>
+                            <span>Tổng cộng</span>
                             <span>250.000 đ</span>
                         </p>
                         <p class="mt-3">
-                            <a href="#" class="btn btn-primary py-2 px-3">Re-order</a>
-                            <a href="#" class="btn btn-outline-secondary py-2 px-3 ml-2">Back to history</a>
+                            <a href="#" class="btn btn-primary py-2 px-3">Đặt lại</a>
+                            <a href="#" class="btn btn-outline-secondary py-2 px-3 ml-2">Quay lại lịch sử</a>
                         </p>
                     </div>
                 </div>
             </div>
 
             <p class="text-muted mt-4">
-                \* This is a sample order detail page. Real data will appear here after integrating the database.
+                * Đây là dữ liệu mẫu. Dữ liệu thực sẽ xuất hiện sau khi tích hợp cơ sở dữ liệu.
             </p>
         </div>
     </section>

@@ -7,9 +7,9 @@ def order_history_view(request):
     return render(request, 'orders/order-history.html', context)
 
 
-def order_detail_view(request):
+def order_single_view(request):
     context = {}
-    return render(request, 'orders/order-detail.html', context)
+    return render(request, 'orders/order-single.html', context)
 
 
 def order_success_view(request):

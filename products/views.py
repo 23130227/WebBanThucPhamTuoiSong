@@ -12,6 +12,7 @@ from .models import *
 
 # Create your views here.
 def product_single_view(request, category_slug, product_slug):
+    context = {}
     category = get_object_or_404(Category, slug=category_slug)
     product = get_object_or_404(Product, slug=product_slug, category=category)
     avg_rating = product.reviews.aggregate(
@@ -30,9 +31,8 @@ def product_single_view(request, category_slug, product_slug):
         r.stars = range(r.rating)
         r.empty_stars = range(5 - r.rating)
     related_products = (Product.objects.filter(category=category).exclude(pk=product.pk).order_by(Random())[:4])
-    return render(request, "products/product-single.html",
-                  {'product': product, 'reviews': reviews,
-                   'related_products': related_products})
+    context = {'product': product, 'reviews': reviews, 'related_products': related_products}
+    return render(request, "products/product-single.html", context)
 
 
 def is_normal_user(user):
@@ -63,29 +63,28 @@ def is_normal_user(user):
 
 
 def shop_all_products_view(request):
-    product_list = Product.objects.all().select_related('category').order_by('name')
+    context = {}
+    product_list = Product.objects.active().all().select_related('category').order_by('name')
     categories = Category.objects.all().order_by('name')
 
     paginator = Paginator(product_list, 16)
     page = request.GET.get('page')
     products = paginator.get_page(page)
 
-    return render(request, 'products/shop.html', {
-        'products': products,
-        'categories': categories,
-        'current_category': None
-    })
+    context = {'products': products, 'categories': categories, 'current_category': None}
+    return render(request, 'products/shop.html', context)
 
 
 def shop_by_category_view(request, category_slug):
+    context = {}
     category = get_object_or_404(Category, slug=category_slug)
-    product_list = Product.objects.filter(category=category).order_by('name')
+    product_list = Product.objects.active().filter(category=category).order_by('name')
     categories = Category.objects.all().order_by('name')
     paginator = Paginator(product_list, 16)
     page = request.GET.get('page')
     products = paginator.get_page(page)
-    return render(request, 'products/shop.html',
-                  {'products': products, 'categories': categories, 'current_category': category})
+    context = {'products': products, 'categories': categories, 'current_category': category}
+    return render(request, 'products/shop.html', context)
 
 
 def search_results_view(request):

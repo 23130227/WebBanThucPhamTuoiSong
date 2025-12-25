@@ -27,7 +27,7 @@
                 <div class="col-md-7">
                     <div class="card border-0 shadow ftco-animate">
                         <div class="card-body p-4 p-md-5">
-                            <form method="post" class="contact-form">
+                            <form method="post" class="contact-form" onsubmit="disableSubmit(this)">
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <label for="username">Username</label>

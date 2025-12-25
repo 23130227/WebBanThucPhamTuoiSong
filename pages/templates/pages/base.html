@@ -72,7 +72,7 @@
                            data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">Danh mục</a>
                         <div class="dropdown-menu" aria-labelledby="dropdown04">
-                            <a class="dropdown-item" href="{% url 'shop-all-products' %}">Tất cả sản phẩm</a>
+                            <a class="dropdown-item" href="{% url 'shop_all_products' %}">Tất cả sản phẩm</a>
                             {% for c in categories %}
                                 <a class="dropdown-item" href="{{ c.get_absolute_url }}">{{ c.name }}</a>
                             {% endfor %}
@@ -94,7 +94,7 @@
                         <li class="nav-item"><a href="{% url 'login' %}" class="nav-link">Đăng nhập</a></li>
                         <li class="nav-item"><a href="{% url 'register' %}" class="nav-link">Đăng ký</a></li>
                     {% endif %}
-                    <li class="nav-item"><a href="{% url 'search-results' %}" class="nav-link"><span
+                    <li class="nav-item"><a href="{% url 'search_results' %}" class="nav-link"><span
                             class="icon-search"></span></a></li>
                     <li class="nav-item cta cta-colored">
                         <a href="{% url 'cart' %}" class="nav-link">
@@ -217,6 +217,13 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
 <script src="{% static 'js/google-map.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
+<script>
+    function disableSubmit(form) {
+        const btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.innerText = 'Đang xử lý...';
+    }
+</script>
 {% block scripts %} {% endblock scripts %}
 </body>
 </html>

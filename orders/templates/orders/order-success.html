@@ -18,13 +18,13 @@
 
                         <!-- Dummy data, sau này thay bằng dữ liệu thật -->
                         <p class="mb-1">
-                            <strong>Order code:</strong> \#1005
+                            <strong>Order ID:</strong> {{ order.id }}
                         </p>
                         <p class="mb-1">
-                            <strong>Total:</strong> 350.000 đ
+                            <strong>Total:</strong> {{ order.total }}₫
                         </p>
                         <p class="mb-4">
-                            <strong>Date:</strong> 02/12/2024 14:30
+                            <strong>Date:</strong> {{ order.created_at }}
                         </p>
 
                         <p class="mb-4">
@@ -35,16 +35,11 @@
                             <a href="{% url 'index' %}" class="btn btn-primary py-2 px-4 mr-2">
                                 Continue shopping
                             </a>
-                            <a href="{% url 'order-history' %}" class="btn btn-outline-secondary py-2 px-4">
+                            <a href="{% url 'order_history' %}" class="btn btn-outline-secondary py-2 px-4">
                                 View order history
                             </a>
                         </p>
                     </div>
-
-                    <p class="text-muted mt-4">
-                        \* This is a sample success page. Real order information will be filled after integrating the
-                        database.
-                    </p>
                 </div>
             </div>
         </div>

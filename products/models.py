@@ -9,21 +9,33 @@ from django.utils import timezone
 # Create your models here.
 class ProductQuerySet(models.QuerySet):
     def active(self):
-        return self.filter(is_active=True, expiry_date__gte=timezone.now().date())
+        return self.filter(is_active=True, expiry_date__gt=timezone.now(), stock_quantity__gt=0)
 
 
 class Product(models.Model):
+    UNIT_CHOICES = [
+        ('g', 'Gram (g)'),
+        ('kg', 'Kilogram (kg)'),
+        ('pcs', 'Cái / Miếng'),
+        ('bunch', 'Bó'),
+        ('bag', 'Túi'),
+        ('ml', 'Milliliter (ml)'),
+        ('l', 'Lít (l)'),
+        ('bottle', 'Chai'),
+        ('pack', 'Gói / Hộp'),
+    ]
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True, allow_unicode=True)
     category = models.ForeignKey('Category', related_name='products', on_delete=models.CASCADE)
     description = models.TextField()
-    unit = models.CharField(max_length=50)
-    quantity = models.IntegerField(validators=[MinValueValidator(0)])
-    sold_quantity = models.IntegerField(default=0, validators=[MinValueValidator(0)])
-    base_price = models.IntegerField(validators=[MinValueValidator(0)])
+    unit = models.CharField(max_length=50, choices=UNIT_CHOICES)
+    unit_size = models.PositiveIntegerField(default=500)
+    stock_quantity = models.PositiveIntegerField(default=0)
+    sold_quantity = models.PositiveIntegerField(default=0)
+    base_price = models.PositiveIntegerField()
     expiry_date = models.DateTimeField()
-    image = models.ImageField(upload_to='products/', blank=True)
+    image = models.ImageField(upload_to='products/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     objects = ProductQuerySet.as_manager()
@@ -32,7 +44,7 @@ class Product(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("product-single", args=[self.category.slug, self.slug])
+        return reverse("product_single", args=[self.category.slug, self.slug])
 
     def get_active_product_discount(self):
         return ProductDiscount.objects.filter(product=self,
@@ -46,7 +58,7 @@ class Product(models.Model):
 
     def get_expiry_discount(self):
         delta = self.expiry_date - timezone.now()
-        days_to_expiry = delta.total_seconds() / 86400  # 1 ngày = 86400 giây
+        days_to_expiry = max(0, int(delta.total_seconds() / 86400))
 
         return ExpiryDiscount.objects.filter(
             category=self.category,
@@ -84,14 +96,13 @@ class Category(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("shop-by-category", args=[self.slug])
+        return reverse("shop_by_category", args=[self.slug])
 
 
 class ProductDiscount(models.Model):
     id = models.AutoField(primary_key=True)
     product = models.ForeignKey('Product', related_name='discounts', on_delete=models.CASCADE)
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=0,
-                                              validators=[MinValueValidator(0.0), MaxValueValidator(100.0)])
+    discount_percentage = models.PositiveSmallIntegerField(validators=[MaxValueValidator(100)])
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
 
@@ -115,8 +126,7 @@ class ProductDiscount(models.Model):
 class CategoryDiscount(models.Model):
     id = models.AutoField(primary_key=True)
     category = models.ForeignKey('Category', related_name='discounts', on_delete=models.CASCADE)
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=0,
-                                              validators=[MinValueValidator(0.0), MaxValueValidator(100.0)])
+    discount_percentage = models.PositiveSmallIntegerField(validators=[MaxValueValidator(100)])
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
 
@@ -141,21 +151,28 @@ class ExpiryDiscount(models.Model):
     id = models.AutoField(primary_key=True)
     category = models.ForeignKey('Category', related_name='expiry_discounts', on_delete=models.CASCADE)
     days_before_expiry = models.PositiveIntegerField()
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=0,
-                                              validators=[MinValueValidator(0.0), MaxValueValidator(100.0)])
+    discount_percentage = models.PositiveSmallIntegerField(validators=[MaxValueValidator(100)])
 
     def __str__(self):
         return f"{self.category.name} Expiry Discount - {self.discount_percentage}% for products expiring in {self.days_before_expiry} days"
 
     def clean(self):
         super().clean()
-        if ExpiryDiscount.objects.filter(category=self.category, days_before_expiry=self.days_before_expiry).exists():
+        qs = ExpiryDiscount.objects.filter(
+            category=self.category,
+            days_before_expiry=self.days_before_expiry
+        )
+        if self.pk:
+            qs = qs.exclude(pk=self.pk)
+
+        if qs.exists():
             raise ValidationError("Đã tồn tại khuyến mãi.")
+
 
 class Review(models.Model):
     id = models.AutoField(primary_key=True)
     product = models.ForeignKey('Product', related_name='reviews', on_delete=models.CASCADE)
-    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    rating = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     user = models.ForeignKey(User, related_name='reviews', on_delete=models.CASCADE)
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
