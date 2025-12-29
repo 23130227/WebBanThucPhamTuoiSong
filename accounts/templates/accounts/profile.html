@@ -29,7 +29,7 @@
                         <div class="col-md-5 mb-4">
                             <div class="card border-0 shadow ftco-animate h-100">
                                 <div class="card-body text-center p-4">
-                                    <img src="{% static 'images/person_1.jpg' %}" alt="Avatar"
+                                    <img src="{% static 'images/person_1.jpg' %}" alt="Ảnh đại diện"
                                          class="rounded-circle mb-3" width="110">
                                     <h4 class="mb-1">{{ user.get_full_name|default:user.username }}</h4>
                                     <p class="text-muted mb-3">{{ user.email }}</p>
@@ -76,7 +76,6 @@
                                         </div>
                                         <div class="form-group text-right">
                                             <button type="submit" class="btn btn-primary px-4">Lưu thay đổi
-
 </button>
                                         </div>
                                     </form>

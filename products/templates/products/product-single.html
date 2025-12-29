@@ -6,10 +6,10 @@
             <div class="row no-gutters slider-text align-items-center justify-content-center">
                 <div class="col-md-9 ftco-animate text-center">
                     <p class="breadcrumbs"><span class="mr-2"><a
-                            href="../../../pages/templates/pages/index.html">Home</a></span> <span class="mr-2"><a
-                            href="../../../pages/templates/pages/index.html">Product</a></span>
-                        <span>Product Single</span></p>
-                    <h1 class="mb-0 bread">Product Single</h1>
+                            href="../../../pages/templates/pages/index.html">Trang chủ</a></span> <span class="mr-2"><a
+                            href="../../../pages/templates/pages/index.html">Sản phẩm</a></span>
+                        <span>Chi tiết sản phẩm</span></p>
+                    <h1 class="mb-0 bread">Chi tiết sản phẩm</h1>
                 </div>
             </div>
         </div>
@@ -21,7 +21,7 @@
                 <div class="col-lg-6 mb-5 ftco-animate">
                     <a href="{{ product.image.url }}" class="image-popup"><img
                             src="{{ product.image.url }}" class="img-fluid"
-                            alt="Colorlib Template"></a>
+                            alt="Ảnh sản phẩm"></a>
                 </div>
                 <div class="col-lg-6 product-details pl-md-5 ftco-animate">
                     <h3>{{ product.name }}</h3>
@@ -47,12 +47,10 @@
                             {% endif %}
                         </p>
                         <p class="text-left mr-4">
-                            <a href="#" class="mr-2" style="color: #000;">{{ product.reviews.count }} <span
-                                    style="color: #bbb;">Rating</span></a>
+                            <a href="#" class="mr-2" style="color: #000;">{{ product.reviews.count }} <span style="color: #bbb;">Đánh giá</span></a>
                         </p>
                         <p class="text-left">
-                            <a href="#" class="mr-2" style="color: #000;">{{ product.sold_quantity }} <span
-                                    style="color: #bbb;">Sold</span></a>
+                            <a href="#" class="mr-2" style="color: #000;">{{ product.sold_quantity }} <span style="color: #bbb;">Đã bán</span></a>
                         </p>
                     </div>
                     {% if product.get_discount_percentage != 0 %}
@@ -67,27 +65,27 @@
                         <div class="row mt-4">
                             <div class="w-100"></div>
                             <div class="input-group col-md-6 d-flex mb-3">
-	             	<span class="input-group-btn mr-2">
-	                	<button type="button" class="quantity-left-minus btn" data-type="minus" data-field="">
+	              	<span class="input-group-btn mr-2">
+	                 <button type="button" class="quantity-left-minus btn" data-type="minus" data-field="">
 	                   <i class="ion-ios-remove"></i>
-	                	</button>
-	            		</span>
+	                 </button>
+	            	</span>
                                 <input type="text" id="quantity" name="quantity" class="form-control input-number"
                                        value="1"
                                        min="1" max="100">
                                 <span class="input-group-btn ml-2">
-	                	<button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
+	                 <button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
 	                     <i class="ion-ios-add"></i>
 	                 </button>
-	             	</span>
+	              	</span>
                             </div>
                             <div class="w-100"></div>
                             <div class="col-md-12">
-                                <p style="color: #000;">{{ product.stock_quantity }} available</p>
+                                <p style="color: #000;">{{ product.stock_quantity }} sản phẩm có sẵn</p>
                             </div>
                         </div>
                         <p>
-                            <button type="submit" class="btn btn-black py-3 px-5">Add to Cart</button>
+                            <button type="submit" class="btn btn-black py-3 px-5">Thêm vào giỏ hàng</button>
                         </p>
                     </form>
                 </div>
@@ -100,7 +98,7 @@
         <div class="container">
             <div class="row justify-content-center mb-5 pb-3">
                 <div class="col-md-12 heading-section text-center ftco-animate">
-                    <span class="subheading">Feedback</span>
+                    <span class="subheading">Phản hồi</span>
                     <h2 class="mb-4">Đánh giá sản phẩm</h2>
                 </div>
             </div>
@@ -185,9 +183,9 @@
         <div class="container">
             <div class="row justify-content-center mb-3 pb-3">
                 <div class="col-md-12 heading-section text-center ftco-animate">
-                    <span class="subheading">Products</span>
-                    <h2 class="mb-4">Related Products</h2>
-                    <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
+                    <span class="subheading">Sản phẩm liên quan</span>
+                    <h2 class="mb-4">Sản phẩm liên quan</h2>
+                    <p>Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các quốc gia Vokalia và Consonantia</p>
                 </div>
             </div>
         </div>
@@ -198,7 +196,7 @@
                         <div class="product">
                             <a href="{{ rp.get_absolute_url }}" class="img-prod"><img class="img-fluid"
                                                                                       src="{{ rp.image.url }}"
-                                                                                      alt="Colorlib Template">
+                                                                                      alt="Ảnh sản phẩm">
                                 {% if rp.get_discount_percentage != 0 %}
                                     <span class="status">-{{ rp.get_discount_percentage }}%</span>
                                 {% endif %}
@@ -245,14 +243,14 @@
         <div class="container py-4">
             <div class="row d-flex justify-content-center py-5">
                 <div class="col-md-6">
-                    <h2 style="font-size: 22px;" class="mb-0">Subcribe to our Newsletter</h2>
-                    <span>Get e-mail updates about our latest shops and special offers</span>
+                    <h2 style="font-size: 22px;" class="mb-0">Đăng ký nhận bản tin</h2>
+                    <span>Nhận thông tin mới nhất về cửa hàng và ưu đãi đặc biệt qua email</span>
                 </div>
                 <div class="col-md-6 d-flex align-items-center">
                     <form action="#" class="subscribe-form">
                         <div class="form-group d-flex">
-                            <input type="text" class="form-control" placeholder="Enter email address">
-                            <input type="submit" value="Subscribe" class="submit px-3">
+                            <input type="text" class="form-control" placeholder="Nhập địa chỉ email">
+                            <input type="submit" value="Đăng ký" class="submit px-3">
                         </div>
                     </form>
                 </div>
