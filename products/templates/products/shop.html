@@ -6,9 +6,9 @@
             <div class="row no-gutters slider-text align-items-center justify-content-center">
                 <div class="col-md-9 ftco-animate text-center">
                     <p class="breadcrumbs"><span class="mr-2"><a
-                            href="../../../pages/templates/pages/index.html">Home</a></span> <span>Products</span>
+                            href="../../../pages/templates/pages/index.html">Trang chủ</a></span> <span>Sản phẩm</span>
                     </p>
-                    <h1 class="mb-0 bread">Products</h1>
+                    <h1 class="mb-0 bread">Sản phẩm</h1>
                 </div>
             </div>
         </div>
@@ -20,7 +20,7 @@
                 <div class="col-md-10 mb-5 text-center">
                     <ul class="product-category">
                         <li><a href="{% url 'shop_all_products' %}"
-                               class="{% if current_category == None %} active {% endif %}">All</a></li>
+                               class="{% if current_category == None %} active {% endif %}">Tất cả</a></li>
                         {% for c in categories %}
                             <li><a href="{{ c.get_absolute_url }}"
                                    class="{% if current_category == c %} active {% endif %}">{{ c.name }}</a>
@@ -35,7 +35,7 @@
                         <div class="product">
                             <a href="{{ p.get_absolute_url }}" class="img-prod"><img class="img-fluid"
                                                                                      src="{{ p.image.url }}"
-                                                                                     alt="Colorlib Template">
+                                                                                     alt="Ảnh sản phẩm">
                                 {% if p.get_discount_percentage != 0 %}
                                     <span class="status">-{{ p.get_discount_percentage }}%</span>
                                 {% endif %}
@@ -109,14 +109,14 @@
         <div class="container py-4">
             <div class="row d-flex justify-content-center py-5">
                 <div class="col-md-6">
-                    <h2 stylx`e="font-size: 22px;" class="mb-0">Subcribe to our Newsletter</h2>
-                    <span>Get e-mail updates about our latest shops and special offers</span>
+                    <h2 style="font-size: 22px;" class="mb-0">Đăng ký nhận bản tin</h2>
+                    <span>Nhận thông tin mới nhất về cửa hàng và ưu đãi đặc biệt qua email</span>
                 </div>
                 <div class="col-md-6 d-flex align-items-center">
                     <form action="#" class="subscribe-form">
                         <div class="form-group d-flex">
-                            <input type="text" class="form-control" placeholder="Enter email address">
-                            <input type="submit" value="Subscribe" class="submit px-3">
+                            <input type="text" class="form-control" placeholder="Nhập địa chỉ email">
+                            <input type="submit" value="Đăng ký" class="submit px-3">
                         </div>
                     </form>
                 </div>

@@ -6,8 +6,8 @@
             <div class="row no-gutters slider-text align-items-center justify-content-center">
                 <div class="col-md-9 ftco-animate text-center">
                     <p class="breadcrumbs"><span class="mr-2"><a
-                            href="../../../pages/templates/pages/index.html">Home</a></span> <span>Cart</span></p>
-                    <h1 class="mb-0 bread">My Cart</h1>
+                            href="../../../pages/templates/pages/index.html">Trang chủ</a></span> <span>Giỏ hàng</span></p>
+                    <h1 class="mb-0 bread">Giỏ hàng của tôi</h1>
                 </div>
             </div>
         </div>
@@ -34,10 +34,10 @@
                             <tr class="text-center">
                                 <th>&nbsp;</th>
                                 <th>&nbsp;</th>
-                                <th>Product name</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
+                                <th>Thành tiền</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -102,60 +102,60 @@
             <div class="row justify-content-end">
                 <div class="col-lg-4 mt-5 cart-wrap ftco-animate">
                     <div class="cart-total mb-3">
-                        <h3>Coupon Code</h3>
-                        <p>Enter your coupon code if you have one</p>
+                        <h3>Mã giảm giá</h3>
+                        <p>Nhập mã giảm giá nếu bạn có</p>
                         <form action="#" class="info">
                             <div class="form-group">
-                                <label for="">Coupon code</label>
+                                <label for="">Mã giảm giá</label>
                                 <input type="text" class="form-control text-left px-3" placeholder="">
                             </div>
                         </form>
                     </div>
-                    <p><a href="checkout.html" class="btn btn-primary py-3 px-4">Apply Coupon</a></p>
+                    <p><a href="checkout.html" class="btn btn-primary py-3 px-4">Áp dụng mã</a></p>
                 </div>
                 <div class="col-lg-4 mt-5 cart-wrap ftco-animate">
                     <div class="cart-total mb-3">
-                        <h3>Estimate shipping and tax</h3>
-                        <p>Enter your destination to get a shipping estimate</p>
+                        <h3>Ước tính phí vận chuyển và thuế</h3>
+                        <p>Nhập điểm đến để nhận ước tính phí vận chuyển</p>
                         <form action="#" class="info">
                             <div class="form-group">
-                                <label for="">Country</label>
+                                <label for="">Quốc gia</label>
                                 <input type="text" class="form-control text-left px-3" placeholder="">
                             </div>
                             <div class="form-group">
-                                <label for="country">State/Province</label>
+                                <label for="country">Tỉnh/Thành phố</label>
                                 <input type="text" class="form-control text-left px-3" placeholder="">
                             </div>
                             <div class="form-group">
-                                <label for="country">Zip/Postal Code</label>
+                                <label for="country">Mã bưu điện</label>
                                 <input type="text" class="form-control text-left px-3" placeholder="">
                             </div>
                         </form>
                     </div>
-                    <p><a href="checkout.html" class="btn btn-primary py-3 px-4">Estimate</a></p>
+                    <p><a href="checkout.html" class="btn btn-primary py-3 px-4">Ước tính</a></p>
                 </div>
                 <div class="col-lg-4 mt-5 cart-wrap ftco-animate">
                     <div class="cart-total mb-3">
-                        <h3>Cart Totals</h3>
+                        <h3>Tổng giỏ hàng</h3>
                         <p class="d-flex">
-                            <span>Subtotal</span>
+                            <span>Tạm tính</span>
                             <span>{{ subtotal }}₫</span>
                         </p>
                         <p class="d-flex">
-                            <span>Delivery</span>
+                            <span>Phí giao hàng</span>
                             <span>{{ delivery }}₫</span>
                         </p>
                         <p class="d-flex">
-                            <span>Discount</span>
+                            <span>Giảm giá</span>
                             <span>{{ discount }}₫</span>
                         </p>
                         <hr>
                         <p class="d-flex total-price">
-                            <span>Total</span>
+                            <span>Tổng cộng</span>
                             <span>{{ total }}₫</span>
                         </p>
                     </div>
-                    <p><a href="{% url 'checkout' %}" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
+                    <p><a href="{% url 'checkout' %}" class="btn btn-primary py-3 px-4">Tiến hành thanh toán</a></p>
                 </div>
             </div>
         </div>
@@ -165,14 +165,14 @@
         <div class="container py-4">
             <div class="row d-flex justify-content-center py-5">
                 <div class="col-md-6">
-                    <h2 style="font-size: 22px;" class="mb-0">Subcribe to our Newsletter</h2>
-                    <span>Get e-mail updates about our latest shops and special offers</span>
+                    <h2 style="font-size: 22px;" class="mb-0">Đăng ký nhận bản tin</h2>
+                    <span>Nhận thông tin mới nhất về cửa hàng và ưu đãi đặc biệt qua email</span>
                 </div>
                 <div class="col-md-6 d-flex align-items-center">
                     <form action="#" class="subscribe-form">
                         <div class="form-group d-flex">
-                            <input type="text" class="form-control" placeholder="Enter email address">
-                            <input type="submit" value="Subscribe" class="submit px-3">
+                            <input type="text" class="form-control" placeholder="Nhập địa chỉ email">
+                            <input type="submit" value="Đăng ký" class="submit px-3">
                         </div>
                     </form>
                 </div>
