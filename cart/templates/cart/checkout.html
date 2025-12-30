@@ -6,14 +6,13 @@
             <div class="row no-gutters slider-text align-items-center justify-content-center">
                 <div class="col-md-9 ftco-animate text-center">
                     <p class="breadcrumbs"><span class="mr-2"><a
-                            href="../../../pages/templates/pages/index.html">Home</a></span> <span>Checkout</span>
+                            href="../../../pages/templates/pages/index.html">Trang chủ</a></span> <span>Thanh toán</span>
                     </p>
-                    <h1 class="mb-0 bread">Checkout</h1>
+                    <h1 class="mb-0 bread">Thanh toán</h1>
                 </div>
             </div>
         </div>
     </div>
-
     <section class="ftco-section">
         <div class="container">
             <form method="post" class="billing-form" onsubmit="disableSubmit(this)">
@@ -24,8 +23,8 @@
                         <div class="row align-items-end">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>Họ và tên</label>
-                                    <input type="text" name="full_name" class="form-control"
+                                    <label for="full_name">Họ và tên</label>
+                                    <input type="text" id="full_name" name="full_name" class="form-control"
                                            value="{{ form.full_name.value|default_if_none:'' }}" placeholder=""
                                            required>
                                 </div>
@@ -37,8 +36,8 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>Số điện thoại</label>
-                                    <input type="text" name="phone" class="form-control"
+                                    <label for="phone">Số điện thoại</label>
+                                    <input type="text" id="phone" name="phone" class="form-control"
                                            value="{{ form.phone.value|default_if_none:'' }}" placeholder="" required>
                                 </div>
                                 {% if form.phone.errors %}
@@ -50,10 +49,10 @@
                             <div class="w-100"></div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>Tỉnh / Thành</label>
+                                    <label for="city">Tỉnh / Thành</label>
                                     <div class="select-wrap">
                                         <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                        <select name="city" id="" class="form-control" required>
+                                        <select name="city" id="city" class="form-control" required>
                                             <option value="">Chọn tỉnh / thành</option>
                                             <option value="Thành phố Hồ Chí Minh">Thành phố Hồ Chí Minh</option>
                                             <option value="Hà Nội">Hà Nội</option>
@@ -70,10 +69,10 @@
                             <div class="w-100"></div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Quận / Huyện</label>
+                                    <label for="district">Quận / Huyện</label>
                                     <div class="select-wrap">
                                         <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                        <select name="district" id="" class="form-control" required>
+                                        <select name="district" id="district" class="form-control" required>
                                             <option value="">Chọn quận / huyện</option>
                                             <option value="Quận 12">Quận 12</option>
                                             <option value="Quận 1">Quận 1</option>
@@ -89,13 +88,13 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Phường / Xã</label>
+                                    <label for="ward">Phường / Xã</label>
                                     <div class="select-wrap">
                                         <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                        <select name="ward" id="" class="form-control" required>
+                                        <select name="ward" id="ward" class="form-control" required>
                                             <option value="">Chọn phường / xã</option>
                                             <option value="Phường An Phú Đông">Phường An Phú Đông</option>
-                                            <option value="Phương An Phú">Phường An Phú</option>
+                                            <option value="Phường An Phú">Phường An Phú</option>
                                             <option value="Phường 1">Phường 1</option>
                                         </select>
                                     </div>
@@ -109,8 +108,8 @@
                             <div class="w-100"></div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>Địa chỉ cụ thể</label>
-                                    <input type="text" name="address" class="form-control"
+                                    <label for="address">Địa chỉ cụ thể</label>
+                                    <input type="text" id="address" name="address" class="form-control"
                                            placeholder="Số nhà, tên đường,..."
                                            value="{{ form.address.value|default_if_none:'' }}" required>
                                 </div>
@@ -124,7 +123,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="note">Ghi chú</label>
-                                    <textarea name="note" class="form-control" placeholder=""
+                                    <textarea name="note" id="note" class="form-control" placeholder=""
                                               rows="2">{{ form.note.value|default_if_none:'' }}</textarea>
                                 </div>
                             </div>
@@ -134,22 +133,22 @@
                         <div class="row mt-5 pt-3">
                             <div class="col-md-12 d-flex mb-5">
                                 <div class="cart-detail cart-total p-3 p-md-4">
-                                    <h3 class="billing-heading mb-4">Cart Total</h3>
+                                    <h3 class="billing-heading mb-4">Tổng giỏ hàng</h3>
                                     <p class="d-flex">
-                                        <span>Subtotal</span>
+                                        <span>Tạm tính</span>
                                         <span>{{ subtotal }}₫</span>
                                     </p>
                                     <p class="d-flex">
-                                        <span>Delivery</span>
+                                        <span>Phí giao hàng</span>
                                         <span>{{ delivery }}₫</span>
                                     </p>
                                     <p class="d-flex">
-                                        <span>Discount</span>
+                                        <span>Giảm giá</span>
                                         <span>{{ discount }}₫</span>
                                     </p>
                                     <hr>
                                     <p class="d-flex total-price">
-                                        <span>Total</span>
+                                        <span>Tổng cộng</span>
                                         <span>{{ total }}₫</span>
                                     </p>
                                 </div>
@@ -178,17 +177,13 @@
                                     <div class="form-group">
                                         <div class="col-md-12">
                                             <div class="checkbox">
-                                                <label><input type="checkbox" value="" class="mr-2" required> I have
-                                                    read and
-                                                    accept
-                                                    the
-                                                    terms and conditions</label>
+                                                <label><input type="checkbox" value="" class="mr-2" required> Tôi đã đọc và đồng ý với các điều khoản</label>
                                             </div>
                                         </div>
                                     </div>
                                     <p>
                                         <button type="submit" class="btn btn-primary py-3 px-4">
-                                            Place an order
+                                            Đặt hàng
                                         </button>
                                     </p>
                                 </div>
@@ -199,19 +194,19 @@
             </form>
         </div>
     </section> <!-- .section -->
-
     <section class="ftco-section ftco-no-pt ftco-no-pb py-5 bg-light">
         <div class="container py-4">
             <div class="row d-flex justify-content-center py-5">
                 <div class="col-md-6">
-                    <h2 style="font-size: 22px;" class="mb-0">Subcribe to our Newsletter</h2>
-                    <span>Get e-mail updates about our latest shops and special offers</span>
+                    <h2 style="font-size: 22px;" class="mb-0">Đăng ký nhận bản tin</h2>
+                    <span>Nhận thông tin mới nhất về cửa hàng và ưu đãi đặc biệt qua email</span>
                 </div>
                 <div class="col-md-6 d-flex align-items-center">
                     <form action="#" class="subscribe-form">
                         <div class="form-group d-flex">
-                            <input type="text" class="form-control" placeholder="Enter email address">
-                            <input type="submit" value="Subscribe" class="submit px-3">
+                            <label for="newsletter_email" class="sr-only">Email</label>
+                            <input type="text" id="newsletter_email" class="form-control" placeholder="Nhập địa chỉ email">
+                            <input type="submit" value="Đăng ký" class="submit px-3">
                         </div>
                     </form>
                 </div>
