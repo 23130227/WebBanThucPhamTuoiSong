@@ -1,12 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.db.models import F
 from django.shortcuts import render, get_object_or_404, redirect
 
 from cart.forms import CheckoutForm
 from orders.models import Order
-from products.models import Product
+from products.models import Product, ProductBatch
 
 
 # # Create your views here.
@@ -70,31 +71,30 @@ def checkout_view(request):
                 address=data['address'],
                 note=data['note'],
                 payment_method=data['payment_method'],
-                subtotal=cart_data['subtotal'],
                 delivery=cart_data['delivery'],
                 discount=cart_data['discount'],
-                total=cart_data['total'],
             )
 
-            for pid, item in cart_data['cart'].items():
-                order.items.create(
-                    product_id=int(pid),
-                    product_name=item['name'],
-                    product_price=item['price'],
-                    quantity=item['quantity'],
-                    total=item['total'],
-                )
-                updated = Product.objects.filter(
-                    id=int(pid),
-                    stock_quantity__gte=item['quantity']
-                ).update(
-                    stock_quantity=F('stock_quantity') - item['quantity'],
-                    sold_quantity=F('sold_quantity') + item['quantity']
-                )
-                if not updated:
-                    messages.error(request, f"Sản phẩm {item['name']} trong kho không đủ")
-                    transaction.set_rollback(True)
-                    return redirect('cart')
+            try:
+                for pid, item in cart_data['cart'].items():
+                    product = Product.objects.get(pk=pid)
+                    order_items = product.allocate_order_items(order, item['quantity'])
+
+                    for oi in order_items:
+                        oi.save()
+                        ProductBatch.objects.filter(pk=oi.batch.pk).update(
+                            remaining_quantity=F('remaining_quantity') - oi.quantity
+                        )
+                        Product.objects.filter(pk=oi.product.pk).update(
+                            sold_quantity=F('sold_quantity') + oi.quantity
+                        )
+
+            except ValidationError as e:
+                messages.error(request, str(e))
+                transaction.set_rollback(True)
+                return redirect('cart')
+
+            order.calculate_total()
 
             del request.session['cart']
             request.session.modified = True
@@ -124,7 +124,7 @@ def add_to_cart(request, product_id):
     else:
         cart[pid] = {
             'name': product.name,
-            'price': float(product.get_discount_price()),
+            'price': float(product.get_discount_price_preview()),
             'quantity': quantity,
             'image': product.image.url if product.image else ''
         }
