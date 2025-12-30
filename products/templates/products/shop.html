@@ -36,8 +36,8 @@
                             <a href="{{ p.get_absolute_url }}" class="img-prod"><img class="img-fluid"
                                                                                      src="{{ p.image.url }}"
                                                                                      alt="Ảnh sản phẩm">
-                                {% if p.get_discount_percentage != 0 %}
-                                    <span class="status">-{{ p.get_discount_percentage }}%</span>
+                                {% if p.get_discount_percentage_preview != 0 %}
+                                    <span class="status">-{{ p.get_discount_percentage_preview }}%</span>
                                 {% endif %}
                                 <div class="overlay"></div>
                             </a>
@@ -45,10 +45,10 @@
                                 <h3><a href="{{ p.get_absolute_url }}">{{ p.name }}</a></h3>
                                 <div class="d-flex">
                                     <div class="pricing">
-                                        {% if p.get_discount_percentage != 0 %}
+                                        {% if p.get_discount_percentage_preview != 0 %}
                                             <p class="price"><span
                                                     class="mr-2 price-dc">{{ p.base_price }}₫</span><span
-                                                    class="price-sale">{{ p.get_discount_price }}₫</span>
+                                                    class="price-sale">{{ p.get_discount_price_preview }}₫</span>
                                             </p>
                                         {% else %}
                                             <p class="price"><span>{{ p.base_price }}₫</span></p>
