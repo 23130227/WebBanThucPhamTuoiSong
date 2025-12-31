@@ -15,12 +15,11 @@ class RegisterForm(UserCreationForm):
 
 
 class ProfileUpdateForm(forms.Form):
-    full_name = forms.CharField(required=False, label="Họ và tên")
-    email = forms.EmailField(required=False, label="Email")
-    phone = forms.CharField(required=False, label="Số điện thoại", max_length=30)
-    address = forms.CharField(required=False, label="Địa chỉ", widget=forms.Textarea(attrs={"rows": 3}))
-    bio = forms.CharField(required=False, label="Tiểu sử ngắn", widget=forms.Textarea(attrs={"rows": 2}))
-
+    full_name = forms.CharField(required=False,label="Họ và tên",widget=forms.TextInput(attrs={"class": "form-control"}),)
+    email = forms.EmailField(required=False,label="Email",widget=forms.EmailInput(attrs={"class": "form-control"}),)
+    phone = forms.CharField(required=False,label="Số điện thoại",max_length=30,widget=forms.TextInput(attrs={"class": "form-control"}),)
+    address = forms.CharField(required=False,label="Địa chỉ",widget=forms.Textarea(attrs={"rows": 3, "class": "form-control"}),)
+    bio = forms.CharField(required=False,label="Tiểu sử ngắn",widget=forms.Textarea(attrs={"rows": 2, "class": "form-control"}),)
     def __init__(self, *args, user, **kwargs):
         super().__init__(*args, **kwargs)
         self.user = user

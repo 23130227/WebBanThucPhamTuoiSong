@@ -75,10 +75,10 @@
                                     {% endif %}
                                     <form method="post">
                                         {% csrf_token %}
+
                                         <div class="form-group">
                                             <label for="id_full_name">Họ và tên</label>
-                                            <input id="id_full_name" name="full_name" class="form-control"
-                                                   value="{{ form.full_name.value }}">
+                                            {{ form.full_name }}
                                             {% if form.full_name.errors %}
                                                 <div class="text-danger small">{{ form.full_name.errors }}</div>
                                             {% endif %}
@@ -86,8 +86,7 @@
 
                                         <div class="form-group">
                                             <label for="id_email">Email</label>
-                                            <input id="id_email" name="email" type="email" class="form-control"
-                                                   value="{{ form.email.value }}">
+                                            {{ form.email }}
                                             {% if form.email.errors %}
                                                 <div class="text-danger small">{{ form.email.errors }}</div>
                                             {% endif %}
@@ -95,8 +94,7 @@
 
                                         <div class="form-group">
                                             <label for="id_phone">Số điện thoại</label>
-                                            <input id="id_phone" name="phone" class="form-control"
-                                                   value="{{ form.phone.value }}">
+                                            {{ form.phone }}
                                             {% if form.phone.errors %}
                                                 <div class="text-danger small">{{ form.phone.errors }}</div>
                                             {% endif %}
@@ -104,8 +102,7 @@
 
                                         <div class="form-group">
                                             <label for="id_address">Địa chỉ giao hàng</label>
-                                            <textarea id="id_address" name="address" class="form-control"
-                                                      rows="3">{{ form.address.value }}</textarea>
+                                            {{ form.address }}
                                             {% if form.address.errors %}
                                                 <div class="text-danger small">{{ form.address.errors }}</div>
                                             {% endif %}
@@ -113,8 +110,7 @@
 
                                         <div class="form-group">
                                             <label for="id_bio">Tiểu sử ngắn</label>
-                                            <textarea id="id_bio" name="bio" class="form-control"
-                                                      rows="2">{{ form.bio.value }}</textarea>
+                                            {{ form.bio }}
                                             {% if form.bio.errors %}
                                                 <div class="text-danger small">{{ form.bio.errors }}</div>
                                             {% endif %}
