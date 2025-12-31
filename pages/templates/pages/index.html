@@ -139,28 +139,28 @@
         </div>
         <div class="container">
             <div class="row">
-                {% for tsp in top_sold_products %}
+                {% for p in top_sold_products %}
                     <div class="col-md-6 col-lg-3 ftco-animate">
                         <div class="product">
-                            <a href="{{ tsp.get_absolute_url }}" class="img-prod"><img class="img-fluid"
-                                                                                       src="{{ tsp.image.url }}"
-                                                                                       alt="Sản phẩm">
-                                {% if tsp.get_discount_percentage != 0 %}
-                                    <span class="status">-{{ tsp.get_discount_percentage }}%</span>
+                            <a href="{{ p.get_absolute_url }}" class="img-prod"><img class="img-fluid"
+                                                                                     src="{{ p.image.url }}"
+                                                                                     alt="Sản phẩm">
+                                {% if p.get_discount_percentage_preview != 0 %}
+                                    <span class="status">-{{ p.get_discount_percentage_preview }}%</span>
                                 {% endif %}
                                 <div class="overlay"></div>
                             </a>
                             <div class="text py-3 pb-4 px-3 text-center">
-                                <h3><a href="{{ tsp.get_absolute_url }}">{{ tsp.name }}</a></h3>
+                                <h3><a href="{{ p.get_absolute_url }}">{{ p.name }}</a></h3>
                                 <div class="d-flex">
                                     <div class="pricing">
-                                        {% if tsp.get_discount_percentage != 0 %}
+                                        {% if p.get_discount_percentage_preview != 0 %}
                                             <p class="price"><span
-                                                    class="mr-2 price-dc">{{ tsp.base_price }}₫</span><span
-                                                    class="price-sale">{{ tsp.get_discount_price }}₫</span>
+                                                    class="mr-2 price-dc">{{ p.base_price }}₫</span><span
+                                                    class="price-sale">{{ p.get_discount_price_preview }}₫</span>
                                             </p>
                                         {% else %}
-                                            <p class="price"><span>{{ tsp.base_price }}₫</span></p>
+                                            <p class="price"><span>{{ p.base_price }}₫</span></p>
                                         {% endif %}
                                     </div>
                                 </div>
@@ -170,7 +170,7 @@
                                            class="add-to-cart d-flex justify-content-center align-items-center text-center">
                                             <span><i class="ion-ios-menu"></i></span>
                                         </a>
-                                        <a href="{% url 'add_to_cart' tsp.id %}"
+                                        <a href="{% url 'add_to_cart' p.id %}"
                                            class="buy-now d-flex justify-content-center align-items-center mx-1">
                                             <span><i class="ion-ios-cart"></i></span>
                                         </a>
@@ -211,7 +211,8 @@
                 <div class="col-md-7 heading-section ftco-animate text-center">
                     <span class="subheading">Cảm nhận khách hàng</span>
                     <h2 class="mb-4">Khách hàng hài lòng nói gì?</h2>
-                    <p>Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các vùng đất Vokalia và Consonantia, nơi đó có những văn bản mù.</p>
+                    <p>Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các vùng đất Vokalia và Consonantia, nơi đó
+                        có những văn bản mù.</p>
                 </div>
             </div>
             <div class="row ftco-animate">
@@ -226,7 +227,8 @@
                     </span>
                                 </div>
                                 <div class="text text-center">
-                                    <p class="mb-5 pl-4 line">Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các vùng đất Vokalia và Consonantia, nơi đó có những văn bản mù.</p>
+                                    <p class="mb-5 pl-4 line">Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các
+                                        vùng đất Vokalia và Consonantia, nơi đó có những văn bản mù.</p>
                                     <p class="name">Garreth Smith</p>
                                     <span class="position">Quản lý Marketing</span>
                                 </div>
@@ -241,7 +243,8 @@
                     </span>
                                 </div>
                                 <div class="text text-center">
-                                    <p class="mb-5 pl-4 line">Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các vùng đất Vokalia và Consonantia, nơi đó có những văn bản mù.</p>
+                                    <p class="mb-5 pl-4 line">Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các
+                                        vùng đất Vokalia và Consonantia, nơi đó có những văn bản mù.</p>
                                     <p class="name">Garreth Smith</p>
                                     <span class="position">Nhà thiết kế giao diện</span>
                                 </div>
@@ -256,7 +259,8 @@
                     </span>
                                 </div>
                                 <div class="text text-center">
-                                    <p class="mb-5 pl-4 line">Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các vùng đất Vokalia và Consonantia, nơi đó có những văn bản mù.</p>
+                                    <p class="mb-5 pl-4 line">Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các
+                                        vùng đất Vokalia và Consonantia, nơi đó có những văn bản mù.</p>
                                     <p class="name">Garreth Smith</p>
                                     <span class="position">Nhà thiết kế UI</span>
                                 </div>
@@ -271,7 +275,8 @@
                     </span>
                                 </div>
                                 <div class="text text-center">
-                                    <p class="mb-5 pl-4 line">Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các vùng đất Vokalia và Consonantia, nơi đó có những văn bản mù.</p>
+                                    <p class="mb-5 pl-4 line">Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các
+                                        vùng đất Vokalia và Consonantia, nơi đó có những văn bản mù.</p>
                                     <p class="name">Garreth Smith</p>
                                     <span class="position">Lập trình viên web</span>
                                 </div>
@@ -286,7 +291,8 @@
                     </span>
                                 </div>
                                 <div class="text text-center">
-                                    <p class="mb-5 pl-4 line">Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các vùng đất Vokalia và Consonantia, nơi đó có những văn bản mù.</p>
+                                    <p class="mb-5 pl-4 line">Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các
+                                        vùng đất Vokalia và Consonantia, nơi đó có những văn bản mù.</p>
                                     <p class="name">Garreth Smith</p>
                                     <span class="position">Phân tích hệ thống</span>
                                 </div>

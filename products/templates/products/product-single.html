@@ -47,14 +47,16 @@
                             {% endif %}
                         </p>
                         <p class="text-left mr-4">
-                            <a href="#" class="mr-2" style="color: #000;">{{ product.reviews.count }} <span style="color: #bbb;">Đánh giá</span></a>
+                            <a href="#" class="mr-2" style="color: #000;">{{ product.reviews.count }} <span
+                                    style="color: #bbb;">Đánh giá</span></a>
                         </p>
                         <p class="text-left">
-                            <a href="#" class="mr-2" style="color: #000;">{{ product.sold_quantity }} <span style="color: #bbb;">Đã bán</span></a>
+                            <a href="#" class="mr-2" style="color: #000;">{{ product.sold_quantity }} <span
+                                    style="color: #bbb;">Đã bán</span></a>
                         </p>
                     </div>
-                    {% if product.get_discount_percentage != 0 %}
-                        <p class="price"><span>{{ product.get_discount_price }}₫</span></p>
+                    {% if product.get_discount_percentage_preview != 0 %}
+                        <p class="price"><span>{{ product.get_discount_price_preview }}₫</span></p>
                     {% else %}
                         <p class="price"><span>{{ product.base_price }}₫</span></p>
                     {% endif %}
@@ -81,7 +83,7 @@
                             </div>
                             <div class="w-100"></div>
                             <div class="col-md-12">
-                                <p style="color: #000;">{{ product.stock_quantity }} sản phẩm có sẵn</p>
+                                <p style="color: #000;">{{ product.get_available_quantity }} sản phẩm có sẵn</p>
                             </div>
                         </div>
                         <p>
