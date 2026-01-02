@@ -4,7 +4,8 @@ from django.contrib.auth.forms import PasswordChangeForm, AuthenticationForm
 from django.contrib.auth import update_session_auth_hash, login, authenticate, logout
 from django.shortcuts import render, redirect
 
-from accounts.forms import RegisterForm
+from accounts.forms import RegisterForm, ProfileUpdateForm
+from accounts.models import Profile
 
 
 # Create your views here.
@@ -44,8 +45,25 @@ def forgot_password_view(request):
     return render(request, 'accounts/forgot-password.html', context)
 
 
+@login_required
 def profile_view(request):
-    context = {}
+    profile, _ = Profile.objects.get_or_create(user=request.user)
+
+    success = False
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, user=request.user)
+        if form.is_valid():
+            form.save()
+            success = True
+            return redirect('profile')
+    else:
+        form = ProfileUpdateForm(user=request.user)
+
+    context = {
+        'form': form,
+        'profile': profile,
+        'success': success,
+    }
     return render(request, 'accounts/profile.html', context)
 
 
