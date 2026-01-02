@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm, AuthenticationForm
 from django.contrib.auth import update_session_auth_hash, login, authenticate, logout
 from django.shortcuts import render, redirect
+from django.contrib import messages
 
 from accounts.forms import RegisterForm, ProfileUpdateForm
 from accounts.models import Profile
@@ -67,6 +68,18 @@ def profile_view(request):
     return render(request, 'accounts/profile.html', context)
 
 
+@login_required
 def password_change_view(request):
-    context = {}
-    return render(request, 'accounts/password-change.html', context)
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            # Giữ user đăng nhập sau khi đổi mật khẩu
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Đổi mật khẩu thành công.')
+            return redirect('password_change')
+        messages.error(request, 'Đổi mật khẩu thất bại. Vui lòng kiểm tra lại thông tin.')
+    else:
+        form = PasswordChangeForm(user=request.user)
+
+    return render(request, 'accounts/password-change.html', {'form': form})
