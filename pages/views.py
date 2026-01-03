@@ -3,6 +3,7 @@ import time
 from django.http import JsonResponse
 from django.shortcuts import render
 
+from pages.models import HomeSlide
 from products.models import Product
 
 
@@ -17,8 +18,9 @@ def ai_chat(request):
 
 
 def index_view(request):
+    slides = HomeSlide.objects.filter(is_active=True)
     top_sold_products = Product.objects.active().order_by('-sold_quantity')[:8]
-    context = {'top_sold_products': top_sold_products}
+    context = {'slides': slides, 'top_sold_products': top_sold_products}
     return render(request, 'pages/index.html', context)
 
 

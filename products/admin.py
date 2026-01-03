@@ -15,6 +15,7 @@ class ProductAdmin(admin.ModelAdmin):
         'is_active',
         'created_at',
     )
+    list_editable = ('is_active',)
     readonly_fields = (
         'slug',
         'sold_quantity',
