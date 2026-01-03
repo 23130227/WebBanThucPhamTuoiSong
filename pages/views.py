@@ -20,7 +20,10 @@ def ai_chat(request):
 def index_view(request):
     slides = HomeSlide.objects.filter(is_active=True)
     top_sold_products = Product.objects.active().order_by('-sold_quantity')[:8]
-    context = {'slides': slides, 'top_sold_products': top_sold_products}
+    products = list(Product.objects.active())
+    products_with_discount = [p for p in products if p.get_discount_percentage_preview() > 0]
+    product_max_discount = max(products_with_discount, key=lambda p: p.get_discount_percentage_preview(), default=None)
+    context = {'slides': slides, 'top_sold_products': top_sold_products, 'product_max_discount': product_max_discount}
     return render(request, 'pages/index.html', context)
 
 
