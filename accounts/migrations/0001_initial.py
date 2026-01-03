@@ -22,7 +22,6 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("phone", models.CharField(blank=True, max_length=30)),
-                ("address", models.TextField(blank=True)),
                 ("bio", models.TextField(blank=True)),
                 (
                     "user",
