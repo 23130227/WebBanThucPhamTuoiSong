@@ -50,7 +50,7 @@ class Product(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            base_slug = slugify(self.name, allow_unicode=True)
+            base_slug = slugify(self.name)
             slug = base_slug
             counter = 1
             while Product.objects.filter(slug=slug).exclude(pk=self.pk).exists():
@@ -191,7 +191,7 @@ class Category(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            base_slug = slugify(self.name, allow_unicode=True)
+            base_slug = slugify(self.name)
             slug = base_slug
             counter = 1
             while Category.objects.filter(slug=slug).exclude(pk=self.pk).exists():
