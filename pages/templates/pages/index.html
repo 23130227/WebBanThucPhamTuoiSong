@@ -131,9 +131,9 @@
                 </div>
             </div>
         </div>
-        {% if top_sold_products %}
-            <div class="container">
-                <div class="row">
+        <div class="container">
+            <div class="row">
+                {% if top_sold_products %}
                     {% for p in top_sold_products %}
                         <div class="col-md-6 col-lg-3 ftco-animate">
                             <div class="product">
@@ -178,17 +178,11 @@
                             </div>
                         </div>
                     {% endfor %}
-                </div>
+                {% else %}
+                    <p>Không có sản phẩm bán chạy nào.</p>
+                {% endif %}
             </div>
-        {% else %}
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <p>Không có sản phẩm bán chạy nào.</p>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
+        </div>
     </section>
     {% if product_max_discount %}
         <section class="ftco-section img" style="background-image: url({% static 'images/bg_3.jpg' %});">
@@ -202,12 +196,12 @@
                         </h3>
                         <span class="price">{{ product_max_discount.base_price }}₫ <a
                                 href="{{ product_max_discount.get_absolute_url }}">chỉ còn {{ product_max_discount.get_discount_price_preview }}₫</a></span>
-                        <div id="timer" class="d-flex mt-5">
-                            <div class="time" id="days"></div>
-                            <div class="time pl-3" id="hours"></div>
-                            <div class="time pl-3" id="minutes"></div>
-                            <div class="time pl-3" id="seconds"></div>
-                        </div>
+                        {#                        <div id="timer" class="d-flex mt-5">#}
+                        {#                            <div class="time" id="days"></div>#}
+                        {#                            <div class="time pl-3" id="hours"></div>#}
+                        {#                            <div class="time pl-3" id="minutes"></div>#}
+                        {#                            <div class="time pl-3" id="seconds"></div>#}
+                        {#                        </div>#}
                     </div>
                 </div>
             </div>
@@ -225,119 +219,60 @@
             </div>
             <div class="row ftco-animate">
                 <div class="col-md-12">
-                    <div class="carousel-testimony owl-carousel">
-                        <div class="item">
-                            <div class="testimony-wrap p-4 pb-5">
-                                <div class="user-img mb-5"
-                                     style="background-image: url({% static 'images/person_1.jpg' %});">
+                    {% if top_reviews %}
+                        <div class="carousel-testimony owl-carousel">
+                            {% for r in top_reviews %}
+                                <div class="item">
+                                    <div class="testimony-wrap p-4 pb-5">
+                                        <div class="user-img mb-5"
+                                             style="background-image: url({% static 'images/person_1.jpg' %});">
                     <span class="quote d-flex align-items-center justify-content-center">
                       <i class="icon-quote-left"></i>
                     </span>
+                                        </div>
+                                        <div class="text text-center">
+                                            <p class="mb-5 pl-4 line">{{ r.comment }}</p>
+                                            <p class="name pl-4">{{ r.user.first_name }}</p>
+                                            <span class="position pl-4">{{ r.product.name }}</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="text text-center">
-                                    <p class="mb-5 pl-4 line">Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các
-                                        vùng đất Vokalia và Consonantia, nơi đó có những văn bản mù.</p>
-                                    <p class="name">Garreth Smith</p>
-                                    <span class="position">Quản lý Marketing</span>
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div>
-                        <div class="item">
-                            <div class="testimony-wrap p-4 pb-5">
-                                <div class="user-img mb-5"
-                                     style="background-image: url({% static 'images/person_2.jpg' %});">
-                    <span class="quote d-flex align-items-center justify-content-center">
-                      <i class="icon-quote-left"></i>
-                    </span>
-                                </div>
-                                <div class="text text-center">
-                                    <p class="mb-5 pl-4 line">Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các
-                                        vùng đất Vokalia và Consonantia, nơi đó có những văn bản mù.</p>
-                                    <p class="name">Garreth Smith</p>
-                                    <span class="position">Nhà thiết kế giao diện</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="testimony-wrap p-4 pb-5">
-                                <div class="user-img mb-5"
-                                     style="background-image: url({% static 'images/person_3.jpg' %});">
-                    <span class="quote d-flex align-items-center justify-content-center">
-                      <i class="icon-quote-left"></i>
-                    </span>
-                                </div>
-                                <div class="text text-center">
-                                    <p class="mb-5 pl-4 line">Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các
-                                        vùng đất Vokalia và Consonantia, nơi đó có những văn bản mù.</p>
-                                    <p class="name">Garreth Smith</p>
-                                    <span class="position">Nhà thiết kế UI</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="testimony-wrap p-4 pb-5">
-                                <div class="user-img mb-5"
-                                     style="background-image: url({% static 'images/person_1.jpg' %});">
-                    <span class="quote d-flex align-items-center justify-content-center">
-                      <i class="icon-quote-left"></i>
-                    </span>
-                                </div>
-                                <div class="text text-center">
-                                    <p class="mb-5 pl-4 line">Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các
-                                        vùng đất Vokalia và Consonantia, nơi đó có những văn bản mù.</p>
-                                    <p class="name">Garreth Smith</p>
-                                    <span class="position">Lập trình viên web</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="testimony-wrap p-4 pb-5">
-                                <div class="user-img mb-5"
-                                     style="background-image: url({% static 'images/person_1.jpg' %});">
-                    <span class="quote d-flex align-items-center justify-content-center">
-                      <i class="icon-quote-left"></i>
-                    </span>
-                                </div>
-                                <div class="text text-center">
-                                    <p class="mb-5 pl-4 line">Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các
-                                        vùng đất Vokalia và Consonantia, nơi đó có những văn bản mù.</p>
-                                    <p class="name">Garreth Smith</p>
-                                    <span class="position">Phân tích hệ thống</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {% else %}
+                        <p class="text-center">Không có đánh giá nào.</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </section>
     <hr>
-    <section class="ftco-section ftco-partner">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm ftco-animate">
-                    <a href="#" class="partner"><img src="{% static 'images/partner-1.png' %}" class="img-fluid"
-                                                     alt="Đối tác"></a>
-                </div>
-                <div class="col-sm ftco-animate">
-                    <a href="#" class="partner"><img src="{% static 'images/partner-2.png' %}" class="img-fluid"
-                                                     alt="Đối tác"></a>
-                </div>
-                <div class="col-sm ftco-animate">
-                    <a href="#" class="partner"><img src="{% static 'images/partner-3.png' %}" class="img-fluid"
-                                                     alt="Đối tác"></a>
-                </div>
-                <div class="col-sm ftco-animate">
-                    <a href="#" class="partner"><img src="{% static 'images/partner-4.png' %}" class="img-fluid"
-                                                     alt="Đối tác"></a>
-                </div>
-                <div class="col-sm ftco-animate">
-                    <a href="#" class="partner"><img src="{% static 'images/partner-5.png' %}" class="img-fluid"
-                                                     alt="Đối tác"></a>
-                </div>
-            </div>
-        </div>
-    </section>
+    {#    <section class="ftco-section ftco-partner">#}
+    {#        <div class="container">#}
+    {#            <div class="row">#}
+    {#                <div class="col-sm ftco-animate">#}
+    {#                    <a href="#" class="partner"><img src="{% static 'images/partner-1.png' %}" class="img-fluid"#}
+    {#                                                     alt="Đối tác"></a>#}
+    {#                </div>#}
+    {#                <div class="col-sm ftco-animate">#}
+    {#                    <a href="#" class="partner"><img src="{% static 'images/partner-2.png' %}" class="img-fluid"#}
+    {#                                                     alt="Đối tác"></a>#}
+    {#                </div>#}
+    {#                <div class="col-sm ftco-animate">#}
+    {#                    <a href="#" class="partner"><img src="{% static 'images/partner-3.png' %}" class="img-fluid"#}
+    {#                                                     alt="Đối tác"></a>#}
+    {#                </div>#}
+    {#                <div class="col-sm ftco-animate">#}
+    {#                    <a href="#" class="partner"><img src="{% static 'images/partner-4.png' %}" class="img-fluid"#}
+    {#                                                     alt="Đối tác"></a>#}
+    {#                </div>#}
+    {#                <div class="col-sm ftco-animate">#}
+    {#                    <a href="#" class="partner"><img src="{% static 'images/partner-5.png' %}" class="img-fluid"#}
+    {#                                                     alt="Đối tác"></a>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </section>#}
     <section class="ftco-section ftco-no-pt ftco-no-pb py-5 bg-light">
         <div class="container py-4">
             <div class="row d-flex justify-content-center py-5">
