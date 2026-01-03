@@ -11,7 +11,6 @@ class Profile(models.Model):
         related_name="profile",
     )
     phone = models.CharField(max_length=30, blank=True)
-    address = models.TextField(blank=True)
     bio = models.TextField(blank=True)
 
     def __str__(self) -> str:
