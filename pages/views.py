@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 from pages.models import HomeSlide
-from products.models import Product
+from products.models import Product, Review
 
 
 # Create your views here.
@@ -20,7 +20,12 @@ def ai_chat(request):
 def index_view(request):
     slides = HomeSlide.objects.filter(is_active=True)
     top_sold_products = Product.objects.active().order_by('-sold_quantity')[:8]
-    context = {'slides': slides, 'top_sold_products': top_sold_products}
+    products = list(Product.objects.active())
+    products_with_discount = [p for p in products if p.get_discount_percentage_preview() > 0]
+    product_max_discount = max(products_with_discount, key=lambda p: p.get_discount_percentage_preview(), default=None)
+    top_reviews = Review.objects.filter(rating__gte=4).order_by('-created_at')[:5]
+    context = {'slides': slides, 'top_sold_products': top_sold_products, 'product_max_discount': product_max_discount,
+               'top_reviews': top_reviews}
     return render(request, 'pages/index.html', context)
 
 
