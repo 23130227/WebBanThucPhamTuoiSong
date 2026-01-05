@@ -1,10 +1,10 @@
-from django.contrib import messages
+from django.contrib.messages import error, success
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
 from django.db.models import Avg
 from django.db.models.functions import Random
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib import messages
+from django.views.decorators.http import require_POST
 from ai_core.services import check_is_spam
 
 from .models import *
@@ -39,6 +39,30 @@ def is_normal_user(user):
     return user.is_authenticated and not user.is_staff and not user.is_superuser
 
 
+def _get_wishlist_product_ids(request):
+    if not request.user.is_authenticated:
+        return set()
+    return set(
+        WishlistItem.objects.filter(user=request.user).values_list('product_id', flat=True)
+    )
+
+
+@require_POST
+@login_required
+@user_passes_test(is_normal_user)
+def wishlist_toggle(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+
+    obj, created = WishlistItem.objects.get_or_create(user=request.user, product=product)
+    if created:
+        success(request, "Đã thêm sản phẩm vào danh sách yêu thích.")
+    else:
+        obj.delete()
+        success(request, "Đã xóa sản phẩm khỏi danh sách yêu thích.")
+
+    return redirect(request.META.get('HTTP_REFERER', product.get_absolute_url()))
+
+
 # @login_required
 # @user_passes_test(is_normal_user)
 # def submit_review(request, product_id):
@@ -71,7 +95,9 @@ def shop_all_products_view(request):
     page = request.GET.get('page')
     products = paginator.get_page(page)
 
-    context = {'products': products, 'categories': categories, 'current_category': None}
+    wishlist_product_ids = _get_wishlist_product_ids(request)
+
+    context = {'products': products,'categories': categories,'current_category': None,'wishlist_product_ids': wishlist_product_ids,}
     return render(request, 'products/shop.html', context)
 
 
@@ -83,7 +109,15 @@ def shop_by_category_view(request, category_slug):
     paginator = Paginator(product_list, 16)
     page = request.GET.get('page')
     products = paginator.get_page(page)
-    context = {'products': products, 'categories': categories, 'current_category': category}
+
+    wishlist_product_ids = _get_wishlist_product_ids(request)
+
+    context = {
+        'products': products,
+        'categories': categories,
+        'current_category': category,
+        'wishlist_product_ids': wishlist_product_ids,
+    }
     return render(request, 'products/shop.html', context)
 
 
@@ -107,7 +141,7 @@ def submit_review(request, product_id):
             # Gọi hàm kiểm tra
             if check_is_spam(comment):
                 # Nếu là Spam: Báo lỗi đỏ và đuổi về, KHÔNG LƯU
-                messages.error(request, "Bình luận bị chặn vì nghi vấn Spam/Quảng cáo!")
+                error(request, "Bình luận bị chặn vì nghi vấn Spam/Quảng cáo!")
                 return redirect(product.get_absolute_url())
         # === 🟢 HẾT CODE AI ===
 
@@ -118,11 +152,11 @@ def submit_review(request, product_id):
             defaults={'rating': rating, 'comment': comment}
         )
         if created:
-            messages.success(request, "Cảm ơn bạn đã gửi đánh giá!")
+            success(request, "Cảm ơn bạn đã gửi đánh giá!")
         else:
             review.rating = rating
             review.comment = comment
             review.save()
-            messages.success(request, "Đánh giá của bạn đã được cập nhật!")
+            success(request, "Đánh giá của bạn đã được cập nhật!")
 
     return redirect(product.get_absolute_url())

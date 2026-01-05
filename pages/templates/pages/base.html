@@ -88,6 +88,7 @@
                                aria-haspopup="true" aria-expanded="false">{{ user.first_name }}</a>
                             <div class="dropdown-menu" aria-labelledby="dropdown04">
                                 <a class="dropdown-item" href="{% url 'profile' %}">Thông tin cá nhân</a>
+                                <a class="dropdown-item" href="{% url 'wishlist' %}">Sản phẩm yêu thích</a>
                                 <a class="dropdown-item" href="{% url 'order_history' %}">Lịch sử đơn hàng</a>
                                 <a class="dropdown-item" href="{% url 'logout' %}">Đăng xuất</a>
                             </div>

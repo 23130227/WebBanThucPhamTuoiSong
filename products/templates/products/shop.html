@@ -65,9 +65,23 @@
                                            class="buy-now d-flex justify-content-center align-items-center mx-1">
                                             <span><i class="ion-ios-cart"></i></span>
                                         </a>
-                                        <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                            <span><i class="ion-ios-heart"></i></span>
-                                        </a>
+
+                                        {% if user.is_authenticated %}
+                                            <form method="post" action="{% url 'wishlist_toggle' p.id %}" class="m-0 p-0">
+                                                {% csrf_token %}
+                                                <a href="#" onclick="this.closest('form').submit(); return false;"
+                                                   class="heart d-flex justify-content-center align-items-center ">
+                                                    <span>
+                                                        <i class="ion-ios-heart" {% if p.id in wishlist_product_ids %}style="color: #e3342f;"{% endif %}></i>
+                                                    </span>
+                                                </a>
+                                            </form>
+                                        {% else %}
+                                            <a href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}"
+                                               class="heart d-flex justify-content-center align-items-center ">
+                                                <span><i class="ion-ios-heart"></i></span>
+                                            </a>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
