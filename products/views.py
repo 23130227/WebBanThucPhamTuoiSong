@@ -97,7 +97,8 @@ def shop_all_products_view(request):
 
     wishlist_product_ids = _get_wishlist_product_ids(request)
 
-    context = {'products': products,'categories': categories,'current_category': None,'wishlist_product_ids': wishlist_product_ids,}
+    context = {'products': products, 'categories': categories, 'current_category': None,
+               'wishlist_product_ids': wishlist_product_ids, }
     return render(request, 'products/shop.html', context)
 
 
@@ -160,3 +161,14 @@ def submit_review(request, product_id):
             success(request, "Đánh giá của bạn đã được cập nhật!")
 
     return redirect(product.get_absolute_url())
+
+
+@login_required
+def wishlist_view(request):
+    items = (
+        WishlistItem.objects.filter(user=request.user)
+        .select_related('product', 'product__category')
+        .order_by('-created_at')
+    )
+    context = {'wishlist_items': items}
+    return render(request, 'products/wishlist.html', context)

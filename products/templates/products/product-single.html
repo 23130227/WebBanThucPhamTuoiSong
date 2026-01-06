@@ -208,28 +208,28 @@
         </div>
         <div class="container">
             <div class="row">
-                {% for rp in related_products %}
+                {% for p in related_products %}
                     <div class="col-md-6 col-lg-3 ftco-animate">
                         <div class="product">
-                            <a href="{{ rp.get_absolute_url }}" class="img-prod"><img class="img-fluid"
-                                                                                      src="{{ rp.image.url }}"
-                                                                                      alt="Ảnh sản phẩm">
-                                {% if rp.get_discount_percentage != 0 %}
-                                    <span class="status">-{{ rp.get_discount_percentage }}%</span>
+                            <a href="{{ p.get_absolute_url }}" class="img-prod"><img class="img-fluid"
+                                                                                     src="{{ p.image.url }}"
+                                                                                     alt="Ảnh sản phẩm">
+                                {% if p.get_discount_percentage_preview != 0 %}
+                                    <span class="status">-{{ p.get_discount_percentage_preview }}%</span>
                                 {% endif %}
                                 <div class="overlay"></div>
                             </a>
                             <div class="text py-3 pb-4 px-3 text-center">
-                                <h3><a href="{{ rp.get_absolute_url }}">{{ rp.name }}</a></h3>
+                                <h3><a href="{{ p.get_absolute_url }}">{{ p.name }}</a></h3>
                                 <div class="d-flex">
                                     <div class="pricing">
-                                        {% if rp.get_discount_percentage != 0 %}
+                                        {% if p.get_discount_percentage_preview != 0 %}
                                             <p class="price"><span
-                                                    class="mr-2 price-dc">{{ rp.base_price }}₫</span><span
-                                                    class="price-sale">{{ rp.get_discount_price }}₫</span>
+                                                    class="mr-2 price-dc">{{ p.base_price }}₫</span><span
+                                                    class="price-sale">{{ p.get_discount_price_preview }}₫</span>
                                             </p>
                                         {% else %}
-                                            <p class="price"><span>{{ rp.base_price }}₫</span></p>
+                                            <p class="price"><span>{{ p.base_price }}₫</span></p>
                                         {% endif %}
                                     </div>
                                 </div>

@@ -99,3 +99,29 @@ class ReviewAdmin(admin.ModelAdmin):
         'created_at',
     )
     list_filter = ('rating',)
+
+
+@admin.register(WishlistItem)
+class WishlistItemAdmin(admin.ModelAdmin):
+    list_display = (
+        'user',
+        'product',
+        'created_at',
+    )
+
+    readonly_fields = (
+        'user',
+        'product',
+        'created_at',
+    )
+
+    list_filter = (
+        'created_at',
+    )
+
+    search_fields = (
+        'user__username',
+        'product__name',
+    )
+
+    ordering = ('-created_at',)
