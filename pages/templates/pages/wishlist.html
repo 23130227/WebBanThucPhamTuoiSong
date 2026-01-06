@@ -25,160 +25,50 @@
                                 <th>Sản phẩm</th>
                                 <th>&nbsp;</th>
                                 <th>Giá</th>
-                                <th>Số lượng</th>
-                                <th>Tổng cộng</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr class="text-center">
-                                <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
+                            {% if wishlist_items %}
+                                {% for wi in wishlist_items %}
+                                    <tr class="text-center">
+                                        <td class="product-remove">
+                                            <form method="post" action="{% url 'wishlist_toggle' wi.product.id %}" class="m-0">
+                                                {% csrf_token %}
+                                                <a href="#" onclick="this.closest('form').submit(); return false;">
+                                                    <span class="ion-ios-close"></span>
+                                                </a>
+                                            </form>
+                                        </td>
 
-                                <td class="image-prod">
-                                    <div class="img"
-                                         style="background-image:url({% static 'images/product-1.jpg' %});"></div>
-                                </td>
+                                        <td class="image-prod">
+                                            <a href="{{ wi.product.get_absolute_url }}">
+                                                <div class="img" style="background-image:url({{ wi.product.image.url }});"></div>
+                                            </a>
+                                        </td>
 
-                                <td class="product-name">
-                                    <h3>Ớt chuông</h3>
-                                    <p>Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các quốc gia</p>
-                                </td>
+                                        <td class="product-name">
+                                            <h3><a href="{{ wi.product.get_absolute_url }}">{{ wi.product.name }}</a></h3>
+                                            <p>{{ wi.product.category.name }}</p>
+                                        </td>
 
-                                <td class="price">4.900₫</td>
-
-                                <td class="quantity">
-                                    <div class="input-group mb-3">
-                                        <input type="text" name="quantity" class="quantity form-control input-number"
-                                               value="1" min="1" max="100">
-                                    </div>
-                                </td>
-
-                                <td class="total">4.900₫</td>
-                            </tr><!-- END TR-->
-
-                            <tr class="text-center">
-                                <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
-
-                                <td class="image-prod">
-                                    <div class="img"
-                                         style="background-image:url({% static 'images/product-2.jpg' %});"></div>
-                                </td>
-
-                                <td class="product-name">
-                                    <h3>Ớt chuông</h3>
-                                    <p>Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các quốc gia</p>
-                                </td>
-
-                                <td class="price">15.700₫</td>
-
-                                <td class="quantity">
-                                    <div class="input-group mb-3">
-                                        <input type="text" name="quantity" class="quantity form-control input-number"
-                                               value="1" min="1" max="100">
-                                    </div>
-                                </td>
-
-                                <td class="total">15.700₫</td>
-                            </tr><!-- END TR-->
-
-                            <tr class="text-center">
-                                <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
-
-                                <td class="image-prod">
-                                    <div class="img"
-                                         style="background-image:url({% static 'images/product-3.jpg' %});"></div>
-                                </td>
-
-                                <td class="product-name">
-                                    <h3>Ớt chuông</h3>
-                                    <p>Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các quốc gia</p>
-                                </td>
-
-                                <td class="price">15.700₫</td>
-
-                                <td class="quantity">
-                                    <div class="input-group mb-3">
-                                        <input type="text" name="quantity" class="quantity form-control input-number"
-                                               value="1" min="1" max="100">
-                                    </div>
-                                </td>
-
-                                <td class="total">15.700₫</td>
-                            </tr><!-- END TR-->
-
-                            <tr class="text-center">
-                                <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
-
-                                <td class="image-prod">
-                                    <div class="img"
-                                         style="background-image:url({% static 'images/product-4.jpg' %});"></div>
-                                </td>
-
-                                <td class="product-name">
-                                    <h3>Ớt chuông</h3>
-                                    <p>Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các quốc gia</p>
-                                </td>
-
-                                <td class="price">15.700₫</td>
-
-                                <td class="quantity">
-                                    <div class="input-group mb-3">
-                                        <input type="text" name="quantity" class="quantity form-control input-number"
-                                               value="1" min="1" max="100">
-                                    </div>
-                                </td>
-
-                                <td class="total">15.700₫</td>
-                            </tr><!-- END TR-->
-
-                            <tr class="text-center">
-                                <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
-
-                                <td class="image-prod">
-                                    <div class="img"
-                                         style="background-image:url({% static 'images/product-5.jpg' %});"></div>
-                                </td>
-
-                                <td class="product-name">
-                                    <h3>Ớt chuông</h3>
-                                    <p>Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các quốc gia</p>
-                                </td>
-
-                                <td class="price">15.700₫</td>
-
-                                <td class="quantity">
-                                    <div class="input-group mb-3">
-                                        <input type="text" name="quantity" class="quantity form-control input-number"
-                                               value="1" min="1" max="100">
-                                    </div>
-                                </td>
-
-                                <td class="total">15.700₫</td>
-                            </tr><!-- END TR-->
-
-                            <tr class="text-center">
-                                <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
-
-                                <td class="image-prod">
-                                    <div class="img"
-                                         style="background-image:url({% static 'images/product-6.jpg' %});"></div>
-                                </td>
-
-                                <td class="product-name">
-                                    <h3>Ớt chuông</h3>
-                                    <p>Xa xôi, phía sau những ngọn núi từ ngôn từ, cách xa các quốc gia</p>
-                                </td>
-
-                                <td class="price">15.700₫</td>
-
-                                <td class="quantity">
-                                    <div class="input-group mb-3">
-                                        <input type="text" name="quantity" class="quantity form-control input-number"
-                                               value="1" min="1" max="100">
-                                    </div>
-                                </td>
-
-                                <td class="total">15.700₫</td>
-                            </tr><!-- END TR-->
+                                        <td class="price">
+                                            {% if wi.product.get_discount_percentage_preview != 0 %}
+                                                {{ wi.product.get_discount_price_preview }}₫
+                                            {% else %}
+                                                {{ wi.product.base_price }}₫
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-center p-5">
+                                        Bạn chưa có sản phẩm yêu thích nào.
+                                        <br>
+                                        <a href="{% url 'shop_all_products' %}">Đi đến cửa hàng</a>
+                                    </td>
+                                </tr>
+                            {% endif %}
                             </tbody>
                         </table>
                     </div>

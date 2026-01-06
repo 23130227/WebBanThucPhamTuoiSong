@@ -27,7 +27,7 @@
                     <h3>{{ product.name }}</h3>
                     <div class="rating d-flex">
                         <p class="text-left mr-4">
-                            <a href="#" class="mr-2">{{ product.avg_rating | floatformat:1 }}</a>
+                            <a href="#" class="mr-2">{{ product.avg_rating|floatformat }}</a>
                             {% if product.avg_rating > 0 %}
                                 {% for fs in product.full_star %}
                                     <a href="#"><span class="ion-ios-star"></span></a>
@@ -90,6 +90,21 @@
                             <button type="submit" class="btn btn-black py-3 px-5">Thêm vào giỏ hàng</button>
                         </p>
                     </form>
+
+                    {% if user.is_authenticated and not user.is_staff and not user.is_superuser %}
+                        <form method="post" action="{% url 'wishlist_toggle' product.id %}" class="mt-2">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger py-2 px-4">
+                                {% if wishlist_product_ids and product.id in wishlist_product_ids %}
+                                    <span><i class="ion-ios-heart"></i> Đã yêu thích</span>
+                                {% else %}
+                                    <span><i class="ion-ios-heart-outline"></i> Thêm vào yêu thích</span>
+                                {% endif %}
+                            </button>
+                        </form>
+                    {% else %}
+                        <p class="mt-2"><a href="{% url 'login' %}">Đăng nhập</a> để thêm vào danh sách yêu thích.</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
