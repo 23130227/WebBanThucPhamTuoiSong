@@ -161,7 +161,7 @@
                                     </div>
                                     <div class="bottom-area d-flex px-3">
                                         <div class="m-auto d-flex">
-                                            <a href="#"
+                                            <a href="{{ p.get_absolute_url }}"
                                                class="add-to-cart d-flex justify-content-center align-items-center text-center">
                                                 <span><i class="ion-ios-menu"></i></span>
                                             </a>
@@ -171,12 +171,14 @@
                                             </a>
 
                                             {% if user.is_authenticated %}
-                                                <form method="post" action="{% url 'wishlist_toggle' p.id %}" class="m-0 p-0">
+                                                <form method="post" action="{% url 'wishlist_toggle' p.id %}"
+                                                      class="m-0 p-0">
                                                     {% csrf_token %}
                                                     <a href="#" onclick="this.closest('form').submit(); return false;"
                                                        class="heart d-flex justify-content-center align-items-center">
                                                         <span>
-                                                            <i class="ion-ios-heart" {% if p.id in wishlist_product_ids %}style="color: red;"{% endif %}></i>
+                                                            <i class="ion-ios-heart"
+                                                               {% if p.id in wishlist_product_ids %}style="color: red;"{% endif %}></i>
                                                         </span>
                                                     </a>
                                                 </form>

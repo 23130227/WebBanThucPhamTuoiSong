@@ -30,8 +30,8 @@ def index_view(request):
         wishlist_product_ids = set(
             WishlistItem.objects.filter(user=request.user).values_list('product_id', flat=True)
         )
-    context = {'slides': slides,'top_sold_products': top_sold_products,'product_max_discount': product_max_discount,
-               'top_reviews': top_reviews,'wishlist_product_ids': wishlist_product_ids,}
+    context = {'slides': slides, 'top_sold_products': top_sold_products, 'product_max_discount': product_max_discount,
+               'top_reviews': top_reviews, 'wishlist_product_ids': wishlist_product_ids, }
     return render(request, 'pages/index.html', context)
 
 
@@ -43,14 +43,3 @@ def about_view(request):
 def contact_view(request):
     context = {}
     return render(request, 'pages/contact.html', context)
-
-
-@login_required
-def wishlist_view(request):
-    items = (
-        WishlistItem.objects.filter(user=request.user)
-        .select_related('product', 'product__category')
-        .order_by('-created_at')
-    )
-    context = {'wishlist_items': items}
-    return render(request, 'pages/wishlist.html', context)
