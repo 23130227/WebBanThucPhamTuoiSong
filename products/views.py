@@ -4,11 +4,21 @@ from django.core.paginator import Paginator
 from django.db.models import Avg
 from django.db.models.functions import Random
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 from django.views.decorators.http import require_POST
-from ai_core.services import check_is_spam
 
 from .models import *
 
+from products.ai. load_model import load_model, load_tokenizer
+from products. ai.predict import predict_comment
+
+# loadmodel AI
+MODEL_PATH = 'ai_models/phobert_multitask_Relevant_Sentiment_V2.pth'
+model = load_model(MODEL_PATH)
+tokenizer = load_tokenizer()
+
+def analyze_comment(comment_text):
+    return predict_comment(comment_text, model, tokenizer)
 
 # Create your views here.
 def product_single_view(request, category_slug, product_slug):
@@ -127,34 +137,90 @@ def search_results_view(request):
     return render(request, 'products/search-results.html', context)
 
 
+blackList=[# Từ tục tĩu, chửi thề (tiếng Việt)
+    "địt", "cứt", "lồn", "cặc", "buồi", "đéo", "đỉ", "đĩ", "vkl", "vcc", "clm", "clgt", "dm", "dcm", "đkm",
+    "f*ck", "fuck", "shit", "asshole", "bitch", "motherfucker", "dildo", "xxx",
+    # Phân biệt chủng tộc, nhạy cảm đến màu da/tôn giáo/giới tính
+    "da đen", "mọi rợ", "phản động", "khủng bố", "dao động", "gay", "les", "pede", "bóng lộ", "bê đê",
+    # Spam, quảng cáo
+    "xxx", "sex", "loan tin", "cược", "cá độ", "đánh bạc", "lô đề", "mua bán dâm", "play game", "nhận thưởng",
+    "chuẩn bị vào tù", "free fire", "quảng cáo", "link liên kết", "ib shop mình", "giá rẻ", "khuyến mãi", "cho tiền", "nhận quà",
+    # Tấn công cá nhân hoặc miệt thị
+    "ngu", "óc chó", "đần", "chó", "lừa đảo", "đồ khốn", "đồ ngu", "bại não",
+    # Từ nhạy cảm tiếng Anh
+    "porn", "nude", "nsfw", "blowjob", "cum", "anal", "dick", "pussy", "retard", "niga", "nigger"
+   ]
+
+def check_ban_review(text):
+    text_lower=text.lower()
+    for word in blackList:
+        if word in text_lower:
+            return True, word
+    return False, None
+
 @login_required
 @user_passes_test(is_normal_user)
 def submit_review(request, product_id):
     product = get_object_or_404(Product, id=product_id)
-
     if request.method == 'POST':
         rating = request.POST.get('rating', 0)
         comment = request.POST.get('comment', '').strip()
         user = request.user
 
-        # === 🔴 CHÈN CODE AI VÀO ĐÂY ===
-        if comment:
-            # Gọi hàm kiểm tra
-            if check_is_spam(comment):
-                # Nếu là Spam: Báo lỗi đỏ và đuổi về, KHÔNG LƯU
-                error(request, "Bình luận bị chặn vì nghi vấn Spam/Quảng cáo!")
-                return redirect(product.get_absolute_url())
-        # === 🟢 HẾT CODE AI ===
+        # thực hiện kiểm tra comment có từ ngữ bị ban ngay hay không
+        isbad, word_bad = check_ban_review(comment)
+        if isbad:
+            print(f"Ban: Comment chứa từ cấm '{word_bad}'")
+            messages.error(request, f"Bình luận của bạn chứa từ ngữ không phù hợp: '{word_bad}'")
+            return redirect(product.get_absolute_url())
 
-        # (Code cũ của bạn giữ nguyên bên dưới)
+        ai_result = analyze_comment(comment)
+
+        print("\n" + "=" * 60)
+        print(f" Nội dung: {comment}")
+
+        is_relevant = ai_result.get('relevant', 0)
+        print(f" Chủ đề: {' relevant' if is_relevant == 1 else ' inrelevant'}")
+
+        if is_relevant == 1:
+            # Lấy điểm số (score) từ AI.
+            # Nếu lỡ AI không trả về score thì mặc định là 0.5 (trung lập)
+            score = ai_result.get('sentiment_score', 0.5)
+
+            # Logic tính phần trăm (Quan trọng)
+            # Score càng gần 1 -> Càng Positive
+            # Score càng gần 0 -> Càng Negative
+            percent_pos = round(score * 100, 2)
+            percent_neg = round((1 - score) * 100, 2)
+
+            print(f" sentiment analsys:")
+            print(f"   + positive: {percent_pos}%")
+            print(f"   + negative: {percent_neg}%")
+
+            # Kết luận dựa trên điểm số
+            sentiment_status = "HÀI LÒNG" if score > 0.5 else "THẤT VỌNG"
+            print(f" result AI: {sentiment_status}")
+
+        print("=" * 60 + "\n")
+
+        # ============  QUYẾT ĐỊNH CHẶN ============
+
+        # Nếu KHÔNG liên quan -> Chặn luôn, không lưu
+        if is_relevant == 0:
+            messages.error(request, "Nội dung bình luận không liên quan đến sản phẩm! Vui lòng nhập lại.")
+            return redirect(product.get_absolute_url())
+
+        # Nếu liên quan -> Lưu vào Database
         review, created = Review.objects.get_or_create(
             product=product,
             user=user,
             defaults={'rating': rating, 'comment': comment}
         )
+
         if created:
             success(request, "Cảm ơn bạn đã gửi đánh giá!")
         else:
+            # Nếu user sửa lại review cũ
             review.rating = rating
             review.comment = comment
             review.save()
