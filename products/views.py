@@ -8,18 +8,47 @@ from django.contrib import messages
 from django.views.decorators.http import require_POST
 
 from .models import *
+from products.ai.api_client import analyze_comment_api, check_server_health
 
-from products.ai.load_model import load_model, load_tokenizer
-from products.ai.predict import predict_comment
 
-# loadmodel AI
-MODEL_PATH = 'ai_models/phobert_multitask_Relevant_Sentiment_V2.pth'
-model = load_model(MODEL_PATH)
-tokenizer = load_tokenizer()
+# from products.ai.load_model import load_model, load_tokenizer
+# from products.ai.predict import predict_comment
 
+#
+# # loadmodel AI
+# MODEL_PATH = 'ai_models/phobert_multitask_Relevant_Sentiment_V2.pth'
+# model = load_model(MODEL_PATH)
+# tokenizer = load_tokenizer()
+#
+#
+# def analyze_comment(comment_text):
+#     return predict_comment(comment_text, model, tokenizer)
 
 def analyze_comment(comment_text):
-    return predict_comment(comment_text, model, tokenizer)
+    """
+    Wrapper function để gọi API AI Server.
+    Giữ nguyên tên hàm để không phải sửa nhiều code khác.
+    """
+    result = analyze_comment_api(comment_text)
+
+    if result is None:
+        # Fallback khi API không hoạt động
+        print("⚠️ AI Server không phản hồi, sử dụng fallback")
+        return {
+            'relevant': 1,  # Mặc định cho qua
+            'sentiment': 1,  # Mặc định positive
+            'prob_sentiment': [0.5, 0.5],
+            'sentiment_score': 0.5  # Trung lập
+        }
+
+    # Chuyển đổi format để tương thích với code cũ
+    # Thêm sentiment_score từ prob_sentiment
+    if result.get('prob_sentiment'):
+        result['sentiment_score'] = result['prob_sentiment'][1]  # Xác suất positive
+    else:
+        result['sentiment_score'] = 0.5
+
+    return result
 
 
 # Create your views here.
@@ -176,41 +205,35 @@ def submit_review(request, product_id):
             messages.error(request, f"Chỉ khách hàng đã mua sản phẩm mới được phép đánh giá!")
             return redirect(product.get_absolute_url())
 
-        # thực hiện kiểm tra comment có từ ngữ bị ban ngay hay không
+        # Kiểm tra từ cấm
         isbad, word_bad = check_ban_review(comment)
         if isbad:
             print(f"Ban: Comment chứa từ cấm '{word_bad}'")
             messages.error(request, f"Bình luận của bạn chứa từ ngữ không phù hợp: '{word_bad}'")
             return redirect(product.get_absolute_url())
 
+        # ========== GỌI API AI SERVER ==========
         ai_result = analyze_comment(comment)
 
         print("\n" + "=" * 60)
         print(f" Nội dung: {comment}")
 
         is_relevant = ai_result.get('relevant', 0)
-        print(f" Chủ đề: {' relevant' if is_relevant == 1 else ' inrelevant'}")
+        print(f" Chủ đề: {'✅ relevant' if is_relevant == 1 else '❌ irrelevant'}")
 
         if is_relevant == 1:
-            # Lấy điểm số (score) từ AI.
-            # Nếu lỡ AI không trả về score thì mặc định là 0.5 (trung lập)
             score = ai_result.get('sentiment_score', 0.5)
 
-            # Logic tính phần trăm (Quan trọng)
-            # Score càng gần 1 -> Càng Positive
-            # Score càng gần 0 -> Càng Negative
             percent_pos = round(score * 100, 2)
             percent_neg = round((1 - score) * 100, 2)
 
-            print(f" sentiment analsys:")
+            print(f" Sentiment Analysis:")
             print(f"   + positive: {percent_pos}%")
             print(f"   + negative: {percent_neg}%")
 
-            # Kết luận dựa trên điểm số
             sentiment_status = "positive" if score > 0.5 else "negative"
-            print(f" result AI: {sentiment_status}")
+            print(f" Result AI: {sentiment_status}")
 
-            # Nếu liên quan -> Lưu vào Database
             review, created = Review.objects.get_or_create(
                 product=product,
                 user=user,
@@ -223,7 +246,6 @@ def submit_review(request, product_id):
             if created:
                 success(request, "Cảm ơn bạn đã gửi đánh giá!")
             else:
-                # Nếu user sửa lại review cũ
                 review.rating = rating
                 review.comment = comment
                 review.ai_positive_score = score
@@ -234,9 +256,6 @@ def submit_review(request, product_id):
 
         print("=" * 60 + "\n")
 
-        # ============  QUYẾT ĐỊNH CHẶN ============
-
-        # Nếu KHÔNG liên quan -> Chặn luôn, không lưu
         if is_relevant == 0:
             messages.error(request, "Nội dung bình luận không liên quan đến sản phẩm! Vui lòng nhập lại.")
             return redirect(product.get_absolute_url())
