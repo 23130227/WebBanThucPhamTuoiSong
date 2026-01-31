@@ -7,7 +7,7 @@
             <div class="row no-gutters slider-text align-items-center justify-content-center">
                 <div class="col-md-9 ftco-animate text-center">
                     <p class="breadcrumbs"><span class="mr-2"><a
-                            href="../../../pages/templates/pages/index.html">Trang chủ</a></span> <span>Kết quả tìm kiếm</span>
+                            href="{% url 'index' %}">Trang chủ</a></span> <span>Kết quả tìm kiếm</span>
                     </p>
                     <h1 class="mb-0 bread">Kết quả tìm kiếm</h1>
                 </div>
@@ -18,277 +18,122 @@
     <section class="ftco-section bg-light">
         <div class="container">
             <!-- Search form -->
-            <form method="get" action="" class="mb-4">
+            <form method="get" action="{% url 'search_results' %}" class="mb-4">
                 <div class="input-group">
-                    <input type="text"
-                           name="q"
+                    <label class="sr-only" for="product-search">Tìm kiếm sản phẩm</label>
+                    <input id="product-search" type="text"
+                           name="search"
                            class="form-control"
                            placeholder="Tìm kiếm sản phẩm..."
-                           value="">
+                           value="{% if request.GET.search %}{{ request.GET.search }}{% endif %}">
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="submit">Tìm kiếm</button>
                     </div>
                 </div>
             </form>
 
-            <h4 class="mb-4">Kết quả cho: "rau" (3)</h4>
+            {% if has_searched %}
+                <h4 class="mb-4">Kết quả cho: "{{ search }}" ({{ products.paginator.count }})</h4>
 
-            <div class="row">
-                <div class="col-md-6 col-lg-3 ftco-animate">
-                    <div class="product">
-                        <a href="{% url 'product_single' %}" class="img-prod"><img class="img-fluid"
-                                                                                   src="{% static 'images/product-1.jpg' %}"
-                                                                                   alt="Ảnh sản phẩm">
-                            <span class="status">30%</span>
-                            <div class="overlay"></div>
-                        </a>
-                        <div class="text py-3 pb-4 px-3 text-center">
-                            <h3><a href="{% url 'product_single' %}">Ớt chuông</a></h3>
-                            <div class="d-flex">
-                                <div class="pricing">
-                                    <p class="price"><span class="mr-2 price-dc">2.800.000₫</span><span class="price-sale">1.900.000₫</span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="bottom-area d-flex px-3">
-                                <div class="m-auto d-flex">
-                                    <a href="#"
-                                       class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                        <span><i class="ion-ios-menu"></i></span>
-                                    </a>
-                                    <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                        <span><i class="ion-ios-cart"></i></span>
-                                    </a>
-                                    <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                        <span><i class="ion-ios-heart"></i></span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3 ftco-animate">
-                    <div class="product">
-                        <a href="#" class="img-prod"><img class="img-fluid"
-                                                          src="{% static 'images/product-2.jpg' %}"
-                                                          alt="Ảnh sản phẩm">
-                            <div class="overlay"></div>
-                        </a>
-                        <div class="text py-3 pb-4 px-3 text-center">
-                            <h3><a href="#">Dâu tây</a></h3>
-                            <div class="d-flex">
-                                <div class="pricing">
-                                    <p class="price"><span>120.000₫</span></p>
-                                </div>
-                            </div>
-                            <div class="bottom-area d-flex px-3">
-                                <div class="m-auto d-flex">
-                                    <a href="#"
-                                       class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                        <span><i class="ion-ios-menu"></i></span>
-                                    </a>
-                                    <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                        <span><i class="ion-ios-cart"></i></span>
-                                    </a>
-                                    <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                        <span><i class="ion-ios-heart"></i></span>
-                                    </a>
+                <div class="row">
+                    {% for p in products %}
+                        <div class="col-md-6 col-lg-3 ftco-animate">
+                            <div class="product">
+                                <a href="{{ p.get_absolute_url }}" class="img-prod"><img class="img-fluid"
+                                                                                         src="{% if p.image %}{{ p.image.url }}{% else %}{% static 'images/image_1.jpg' %}{% endif %}"
+                                                                                         alt="Ảnh sản phẩm">
+                                    {% if p.get_discount_percentage_preview != 0 %}
+                                        <span class="status">-{{ p.get_discount_percentage_preview }}%</span>
+                                    {% endif %}
+                                    <div class="overlay"></div>
+                                </a>
+                                <div class="text py-3 pb-4 px-3 text-center">
+                                    <h3><a href="{{ p.get_absolute_url }}">{{ p.name }}</a></h3>
+                                    <div class="d-flex">
+                                        <div class="pricing">
+                                            {% if p.get_discount_percentage_preview != 0 %}
+                                                <p class="price"><span
+                                                        class="mr-2 price-dc">{{ p.base_price }}₫</span><span
+                                                        class="price-sale">{{ p.get_discount_price_preview }}₫</span>
+                                                </p>
+                                            {% else %}
+                                                <p class="price"><span>{{ p.base_price }}₫</span></p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="bottom-area d-flex px-3">
+                                        <div class="m-auto d-flex">
+                                            <a href="{{ p.get_absolute_url }}"
+                                               class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                                                <span><i class="ion-ios-menu"></i></span>
+                                            </a>
+                                            <a href="{% url 'add_to_cart' p.id %}"
+                                               class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                                <span><i class="ion-ios-cart"></i></span>
+                                            </a>
+
+                                            {% if user.is_authenticated %}
+                                                <form method="post" action="{% url 'wishlist_toggle' p.id %}"
+                                                      class="m-0 p-0">
+                                                    {% csrf_token %}
+                                                    <a href="#" onclick="this.closest('form').submit(); return false;"
+                                                       class="heart d-flex justify-content-center align-items-center">
+                                                        <span>
+                                                            <i class="ion-ios-heart"
+                                                               {% if p.id in wishlist_product_ids %}style="color: #e3342f;"{% endif %}></i>
+                                                        </span>
+                                                    </a>
+                                                </form>
+                                            {% else %}
+                                                <a href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}"
+                                                   class="heart d-flex justify-content-center align-items-center">
+                                                    <span><i class="ion-ios-heart"></i></span>
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3 ftco-animate">
-                    <div class="product">
-                        <a href="#" class="img-prod"><img class="img-fluid"
-                                                          src="{% static 'images/product-3.jpg' %}"
-                                                          alt="Ảnh sản phẩm">
-                            <div class="overlay"></div>
-                        </a>
-                        <div class="text py-3 pb-4 px-3 text-center">
-                            <h3><a href="#">Đậu que</a></h3>
-                            <div class="d-flex">
-                                <div class="pricing">
-                                    <p class="price"><span>120.000₫</span></p>
-                                </div>
-                            </div>
-                            <div class="bottom-area d-flex px-3">
-                                <div class="m-auto d-flex">
-                                    <a href="#"
-                                       class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                        <span><i class="ion-ios-menu"></i></span>
-                                    </a>
-                                    <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                        <span><i class="ion-ios-cart"></i></span>
-                                    </a>
-                                    <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                        <span><i class="ion-ios-heart"></i></span>
-                                    </a>
-                                </div>
-                            </div>
+                    {% empty %}
+                        <div class="col-md-12 text-center">
+                            <p>Không tìm thấy sản phẩm nào khớp với từ khóa.</p>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3 ftco-animate">
-                    <div class="product">
-                        <a href="#" class="img-prod"><img class="img-fluid"
-                                                          src="{% static 'images/product-4.jpg' %}"
-                                                          alt="Ảnh sản phẩm">
-                            <div class="overlay"></div>
-                        </a>
-                        <div class="text py-3 pb-4 px-3 text-center">
-                            <h3><a href="#">Bắp cải tím</a></h3>
-                            <div class="d-flex">
-                                <div class="pricing">
-                                    <p class="price"><span>120.000₫</span></p>
-                                </div>
-                            </div>
-                            <div class="bottom-area d-flex px-3">
-                                <div class="m-auto d-flex">
-                                    <a href="#"
-                                       class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                        <span><i class="ion-ios-menu"></i></span>
-                                    </a>
-                                    <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                        <span><i class="ion-ios-cart"></i></span>
-                                    </a>
-                                    <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                        <span><i class="ion-ios-heart"></i></span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
 
+                <div class="row mt-5">
+                    <div class="col text-center">
+                        <div class="block-27">
+                            <ul>
+                                {% if products.has_previous %}
+                                    <li><a href="?search={{ search|urlencode }}&page={{ products.previous_page_number }}">&lt;</a>
+                                    </li>
+                                {% else %}
+                                    <li class="disabled"><span>&lt;</span></li>
+                                {% endif %}
 
-                <div class="col-md-6 col-lg-3 ftco-animate">
-                    <div class="product">
-                        <a href="#" class="img-prod"><img class="img-fluid"
-                                                          src="{% static 'images/product-5.jpg' %}"
-                                                          alt="Ảnh sản phẩm">
-                            <span class="status">30%</span>
-                            <div class="overlay"></div>
-                        </a>
-                        <div class="text py-3 pb-4 px-3 text-center">
-                            <h3><a href="#">Cà chua</a></h3>
-                            <div class="d-flex">
-                                <div class="pricing">
-                                    <p class="price"><span class="mr-2 price-dc">120.000₫</span><span class="price-sale">80.000₫</span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="bottom-area d-flex px-3">
-                                <div class="m-auto d-flex">
-                                    <a href="#"
-                                       class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                        <span><i class="ion-ios-menu"></i></span>
-                                    </a>
-                                    <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                        <span><i class="ion-ios-cart"></i></span>
-                                    </a>
-                                    <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                        <span><i class="ion-ios-heart"></i></span>
-                                    </a>
-                                </div>
-                            </div>
+                                {% for num in products.paginator.page_range %}
+                                    {% if num == products.number %}
+                                        <li class="active"><span>{{ num }}</span></li>
+                                    {% else %}
+                                        <li><a href="?search={{ search|urlencode }}&page={{ num }}">{{ num }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if products.has_next %}
+                                    <li><a href="?search={{ search|urlencode }}&page={{ products.next_page_number }}">&gt;</a>
+                                    </li>
+                                {% else %}
+                                    <li class="disabled"><span>&gt;</span></li>
+                                {% endif %}
+                            </ul>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-3 ftco-animate">
-                    <div class="product">
-                        <a href="#" class="img-prod"><img class="img-fluid"
-                                                          src="{% static 'images/product-6.jpg' %}"
-                                                          alt="Ảnh sản phẩm">
-                            <div class="overlay"></div>
-                        </a>
-                        <div class="text py-3 pb-4 px-3 text-center">
-                            <h3><a href="#">Bông cải xanh</a></h3>
-                            <div class="d-flex">
-                                <div class="pricing">
-                                    <p class="price"><span>120.000₫</span></p>
-                                </div>
-                            </div>
-                            <div class="bottom-area d-flex px-3">
-                                <div class="m-auto d-flex">
-                                    <a href="#"
-                                       class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                        <span><i class="ion-ios-menu"></i></span>
-                                    </a>
-                                    <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                        <span><i class="ion-ios-cart"></i></span>
-                                    </a>
-                                    <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                        <span><i class="ion-ios-heart"></i></span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3 ftco-animate">
-                    <div class="product">
-                        <a href="#" class="img-prod"><img class="img-fluid"
-                                                          src="{% static 'images/product-7.jpg' %}"
-                                                          alt="Ảnh sản phẩm">
-                            <div class="overlay"></div>
-                        </a>
-                        <div class="text py-3 pb-4 px-3 text-center">
-                            <h3><a href="#">Cà rốt</a></h3>
-                            <div class="d-flex">
-                                <div class="pricing">
-                                    <p class="price"><span>120.000₫</span></p>
-                                </div>
-                            </div>
-                            <div class="bottom-area d-flex px-3">
-                                <div class="m-auto d-flex">
-                                    <a href="#"
-                                       class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                        <span><i class="ion-ios-menu"></i></span>
-                                    </a>
-                                    <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                        <span><i class="ion-ios-cart"></i></span>
-                                    </a>
-                                    <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                        <span><i class="ion-ios-heart"></i></span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3 ftco-animate">
-                    <div class="product">
-                        <a href="#" class="img-prod"><img class="img-fluid"
-                                                          src="{% static 'images/product-8.jpg' %}"
-                                                          alt="Ảnh sản phẩm">
-                            <div class="overlay"></div>
-                        </a>
-                        <div class="text py-3 pb-4 px-3 text-center">
-                            <h3><a href="#">Nước ép trái cây</a></h3>
-                            <div class="d-flex">
-                                <div class="pricing">
-                                    <p class="price"><span>120.000₫</span></p>
-                                </div>
-                            </div>
-                            <div class="bottom-area d-flex px-3">
-                                <div class="m-auto d-flex">
-                                    <a href="#"
-                                       class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                        <span><i class="ion-ios-menu"></i></span>
-                                    </a>
-                                    <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                        <span><i class="ion-ios-cart"></i></span>
-                                    </a>
-                                    <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                        <span><i class="ion-ios-heart"></i></span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% else %}
+                <h4 class="mb-4">Hãy nhập từ khóa để tìm kiếm sản phẩm</h4>
+            {% endif %}
 
             <p class="text-muted mt-4">
                 * Đây là trang kết quả tìm kiếm mẫu. Sản phẩm thực tế sẽ xuất hiện tại đây sau khi tích hợp cơ sở dữ liệu và logic tìm kiếm.

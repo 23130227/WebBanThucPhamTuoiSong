@@ -5,8 +5,7 @@
         <div class="container">
             <div class="row no-gutters slider-text align-items-center justify-content-center">
                 <div class="col-md-9 ftco-animate text-center">
-                    <p class="breadcrumbs"><span class="mr-2"><a
-                            href="../../../pages/templates/pages/index.html">Trang chủ</a></span> <span>Tin tức</span></p>
+                    <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'blog' %}">Trang chủ</a></span> <span>Tin tức</span></p>
                     <h1 class="mb-0 bread">Tin tức</h1>
                 </div>
             </div>
@@ -17,17 +16,20 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 ftco-animate">
-                    <div class="row">
+                    {% if search %}
+                    <h2 class="mb-3">Kết quả tìm kiếm cho "{{ search }}"</h2>
+                    {% endif %}
+                     <div class="row">
                         {% for post in posts %}
                         <div class="col-md-12 d-flex ftco-animate">
                             <div class="blog-entry align-self-stretch d-md-flex">
                                 <a href="{% url 'blog_single' post.id %}" class="block-20"
-                                   style="background-image: url({{ post.image.url }});">
+                                   style="background-image: url({% if post.image %}{{ post.image.url }}{% else %}{% static 'images/image_1.jpg' %}{% endif %});">
                                 </a>
                                 <div class="text d-block pl-md-4">
                                     <div class="meta mb-3">
-                                        <div><a href="#">{{ post.date|date:'d/m/Y' }}</a></div>
-                                        <div><a href="#">{{ post.author }}</a></div>
+                                        <div><a href="#">{{ post.date_str }}</a></div>
+                                        <div><a href="#">{% if post.author %}{{ post.author }}{% else %}Admin{% endif %}</a></div>
                                         <div><a href="#" class="meta-chat"><span class="icon-chat"></span> {{ post.comments.count }}</a></div>
                                     </div>
                                     <h3 class="heading"><a href="{% url 'blog_single' post.id %}">{{ post.title }}</a></h3>
@@ -42,61 +44,44 @@
                 </div> <!-- .col-md-8 -->
                 <div class="col-lg-4 sidebar ftco-animate">
                     <div class="sidebar-box">
-                        <form action="#" class="search-form">
-                            <div class="form-group">
-                                <span class="icon ion-ios-search"></span>
-                                <input type="text" class="form-control" placeholder="Tìm kiếm...">
+                        <form action="{% url 'blog' %}" method="get" class="search-form">
+                            <div class="form-group d-flex align-items-center">
+                                <label class="sr-only" for="blog-search">Tìm kiếm</label>
+                                <button type="submit" class="btn btn-link p-0 mr-2" aria-label="Tìm kiếm" style="position:relative;z-index:2;">
+                                    <span class="icon ion-ios-search" style="pointer-events:auto;"></span>
+                                </button>
+                                <input id="blog-search" name="search" type="text" class="form-control" placeholder="Tìm kiếm..." {% if request.GET.search %}value="{{ request.GET.search }}"{% endif %} style="position:relative;z-index:1;">
                             </div>
                         </form>
                     </div>
                     <div class="sidebar-box ftco-animate">
                         <h3 class="heading">Danh mục</h3>
                         <ul class="categories">
-                            <li><a href="#">Rau củ <span>(12)</span></a></li>
-                            <li><a href="#">Trái cây <span>(22)</span></a></li>
-                            <li><a href="#">Nước ép <span>(37)</span></a></li>
-                            <li><a href="#">Sấy khô <span>(42)</span></a></li>
+                            <li><a href="{% url 'shop_all_products' %}" class="{% if current_category == None %} active {% endif %}">Tất cả</a></li>
+                            {% for c in categories %}
+                                <li><a href="{{ c.get_absolute_url }}" class="{% if current_category == c %} active {% endif %}">{{ c.name }}</a></li>
+                            {% empty %}
+                                <li>Không có danh mục</li>
+                            {% endfor %}
                         </ul>
                     </div>
 
                     <div class="sidebar-box ftco-animate">
                         <h3 class="heading">Bài viết mới</h3>
+                        {% for p in recent_posts %}
                         <div class="block-21 mb-4 d-flex">
-                            <a class="blog-img mr-4"
-                               style="background-image: url({% static 'images/image_1.jpg' %});"></a>
+                            <a class="blog-img mr-4" style="background-image: url({% if p.image %}{{ p.image.url }}{% else %}{% static 'images/image_1.jpg' %}{% endif %});"></a>
                             <div class="text">
-                                <h3 class="heading-1"><a href="#">Điểm mạnh của Pointing không kiểm soát được các văn bản mù</a></h3>
+                                <h3 class="heading-1"><a href="{% url 'blog_single' p.id %}">{{ p.title }}</a></h3>
                                 <div class="meta">
-                                    <div><a href="#"><span class="icon-calendar"></span> 09/04/2019</a></div>
-                                    <div><a href="#"><span class="icon-person"></span> Admin</a></div>
-                                    <div><a href="#"><span class="icon-chat"></span> 19</a></div>
+                                    <div><a href="#"><span class="icon-calendar"></span> {{ p.date_str }}</a></div>
+                                    <div><a href="#"><span class="icon-person"></span> {% if p.author %}{{ p.author }}{% else %}Admin{% endif %}</a></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="block-21 mb-4 d-flex">
-                            <a class="blog-img mr-4"
-                               style="background-image: url({% static 'images/image_2.jpg' %});"></a>
-                            <div class="text">
-                                <h3 class="heading-1"><a href="#">Điểm mạnh của Pointing không kiểm soát được các văn bản mù</a></h3>
-                                <div class="meta">
-                                    <div><a href="#"><span class="icon-calendar"></span> 09/04/2019</a></div>
-                                    <div><a href="#"><span class="icon-person"></span> Admin</a></div>
-                                    <div><a href="#"><span class="icon-chat"></span> 19</a></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="block-21 mb-4 d-flex">
-                            <a class="blog-img mr-4"
-                               style="background-image: url({% static 'images/image_3.jpg' %});"></a>
-                            <div class="text">
-                                <h3 class="heading-1"><a href="#">Điểm mạnh của Pointing không kiểm soát được các văn bản mù</a></h3>
-                                <div class="meta">
-                                    <div><a href="#"><span class="icon-calendar"></span> 09/04/2019</a></div>
-                                    <div><a href="#"><span class="icon-person"></span> Admin</a></div>
-                                    <div><a href="#"><span class="icon-chat"></span> 19</a></div>
-                                </div>
-                            </div>
-                        </div>
+                        {% empty %}
+                        <p>Không có bài viết nào.</p>
+                        {% endfor %}
                     </div>
 
                     <div class="sidebar-box ftco-animate">
@@ -115,10 +100,7 @@
 
                     <div class="sidebar-box ftco-animate">
                         <h3 class="heading">Đoạn văn</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus itaque, autem
-                            necessitatibus
-                            voluptate quod mollitia delectus aut, sunt placeat nam vero culpa sapiente consectetur
-                            similique, inventore eos fugit cupiditate numquam!</p>
+                        <p>Đã bao giờ bạn mua cá về nhưng thịt lại bở, hay mua rau buổi sáng đến chiều đã héo rũ? Việc chọn lựa và bảo quản thực phẩm tươi sống thực sự là một nghệ thuật. Hôm nay, FreshFood sẽ chia sẻ những kinh nghiệm 'xương máu' giúp các bà nội trợ luôn giữ được căn bếp tươi ngon nhất.</p>
                     </div>
                 </div>
 
