@@ -293,14 +293,21 @@ class ExpiryDiscount(models.Model):
 
 
 class Review(models.Model):
+    SENTIMENT_CHOICES = [
+        ('positive', 'Positive'),
+        ('negative', 'Negative'),
+    ]
     product = models.ForeignKey('Product', related_name='reviews', on_delete=models.CASCADE)
     rating = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     user = models.ForeignKey(User, related_name='reviews', on_delete=models.CASCADE)
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    ai_positive_score = models.FloatField(blank=True, null=True)
+    ai_negative_score = models.FloatField(blank=True, null=True)
+    ai_sentiment = models.CharField(max_length=10, choices=SENTIMENT_CHOICES, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.user.username} → {self.product.name} ({self.rating}★)"
+        return f"{self.user.username} | {self.product.name} ({self.rating}★ | {self.ai_sentiment})"
 
 
 class WishlistItem(models.Model):
@@ -314,4 +321,3 @@ class WishlistItem(models.Model):
 
     def __str__(self):
         return f"{self.user.username}  {self.product.name}"
-
