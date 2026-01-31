@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.contrib.messages import error, success
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
@@ -96,10 +97,10 @@ def wishlist_toggle(request, product_id):
 
     obj, created = WishlistItem.objects.get_or_create(user=request.user, product=product)
     if created:
-        success(request, "Đã thêm sản phẩm vào danh sách yêu thích.")
+        success(request, "Đã thêm sản phẩm vào danh sách yêu thích.", extra_tags='wishlist')
     else:
         obj.delete()
-        success(request, "Đã xóa sản phẩm khỏi danh sách yêu thích.")
+        success(request, "Đã xóa sản phẩm khỏi danh sách yêu thích.", extra_tags='wishlist')
 
     return redirect(request.META.get('HTTP_REFERER', product.get_absolute_url()))
 
@@ -164,7 +165,29 @@ def shop_by_category_view(request, category_slug):
 
 
 def search_results_view(request):
-    context = {}
+    q = request.GET.get('search', '').strip()
+
+    if q:
+        product_list = Product.objects.active().filter(
+            Q(name__icontains=q) | Q(description__icontains=q)
+        ).select_related('category').order_by('name')
+    else:
+        product_list = Product.objects.none()
+
+    has_searched = bool(q)
+
+    paginator = Paginator(product_list, 16)
+    page_number = request.GET.get('page')
+    products = paginator.get_page(page_number)
+
+    wishlist_product_ids = _get_wishlist_product_ids(request)
+
+    context = {
+        'search': q,
+        'products': products,
+        'wishlist_product_ids': wishlist_product_ids,
+        'has_searched': has_searched,
+    }
     return render(request, 'products/search-results.html', context)
 
 

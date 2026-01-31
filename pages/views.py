@@ -4,6 +4,8 @@ import requests
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
+from django.core.paginator import Paginator
 
 from pages.models import HomeSlide
 from products.models import Product, Review, WishlistItem
@@ -112,3 +114,26 @@ def about_view(request):
 
 def contact_view(request):
     return render(request, 'pages/contact.html', {})
+
+def search_results_view(request):
+    query = request.GET.get('q', '').strip()
+    product_list = Product.objects.active().filter(
+        Q(name__icontains=query) | Q(description__icontains=query)
+    ).select_related('category').order_by('name')
+
+    paginator = Paginator(product_list, 12)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    wishlist_product_ids = set()
+    if request.user.is_authenticated:
+        wishlist_product_ids = set(
+            WishlistItem.objects.filter(user=request.user).values_list('product_id', flat=True)
+        )
+
+    context = {
+        'query': query,
+        'page_obj': page_obj,
+        'wishlist_product_ids': wishlist_product_ids
+    }
+    return render(request, 'pages/search-results.html', context)
