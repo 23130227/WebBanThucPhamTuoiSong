@@ -89,16 +89,51 @@ class ReviewAdmin(admin.ModelAdmin):
         'product',
         'user',
         'rating',
+        'sentiment_badge',
+        'positive_percent',
         'created_at',
     )
+
     readonly_fields = (
         'product',
         'user',
         'rating',
         'comment',
         'created_at',
+        'ai_positive_score',
+        'ai_negative_score',
+        'ai_sentiment',
     )
-    list_filter = ('rating',)
+
+    list_filter = (
+        'rating',
+        'ai_sentiment',
+        'created_at',
+    )
+
+    search_fields = (
+        'product__name',
+        'user__username',
+        'comment',
+    )
+
+    # ---- HIỂN THỊ % ----
+    def positive_percent(self, obj):
+        if obj.ai_positive_score is None:
+            return "-"
+        return f"{obj.ai_positive_score * 100:.1f}%"
+
+    positive_percent.short_description = "AI Positive"
+
+    # ---- HIỂN THỊ BADGE MÀU ----
+    def sentiment_badge(self, obj):
+        if obj.ai_sentiment == "positive":
+            return "🟢 Positive"
+        elif obj.ai_sentiment == "negative":
+            return "🔴 Negative"
+        return "⚪ N/A"
+
+    sentiment_badge.short_description = "Sentiment"
 
 
 @admin.register(WishlistItem)
