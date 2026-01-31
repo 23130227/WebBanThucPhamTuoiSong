@@ -1,0 +1,189 @@
+/* ========== Social Auth Buttons Styles ========== */
+
+/* Đường phân cách "hoặc" */
+.social-auth-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 25px 0;
+}
+
+.social-auth-divider::before,
+.social-auth-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.social-auth-divider span {
+    padding: 0 15px;
+    color: #6c757d;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Container cho các nút social */
+.social-auth-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Style chung cho nút social */
+.btn-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    gap: 12px;
+}
+
+.btn-social:hover {
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.btn-social:active {
+    transform: translateY(0);
+}
+
+/* ========== Nút Google ========== */
+.btn-google {
+    background-color: #ffffff;
+    color: #3c4043;
+    border: 2px solid #dadce0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.btn-google:hover {
+    background-color: #f8f9fa;
+    border-color: #c6c9cc;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    color: #3c4043;
+}
+
+.btn-google:active {
+    background-color: #f1f3f4;
+}
+
+/* Google Icon SVG */
+.btn-google .google-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+/* Alternative: Google Icon với Font Awesome (nếu dùng) */
+.btn-google .fa-google {
+    font-size: 18px;
+    background: linear-gradient(135deg, #4285F4 25%, #EA4335 25%, #EA4335 50%, #FBBC05 50%, #FBBC05 75%, #34A853 75%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ========== Phiên bản nút nhỏ gọn ========== */
+.btn-social-sm {
+    padding: 10px 16px;
+    font-size: 14px;
+    gap: 10px;
+}
+
+.btn-social-sm .google-icon {
+    width: 18px;
+    height: 18px;
+}
+
+/* ========== Phiên bản nút icon only ========== */
+.btn-google-icon {
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border-radius: 50%;
+    background-color: #ffffff;
+    border: 2px solid #dadce0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.btn-google-icon:hover {
+    background-color: #f8f9fa;
+    border-color: #c6c9cc;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: scale(1.05);
+}
+
+.btn-google-icon .google-icon {
+    width: 24px;
+    height: 24px;
+}
+
+/* ========== Container cho nhiều nút social ========== */
+.social-auth-row {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* ========== Loading State ========== */
+.btn-social.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.btn-social.loading::after {
+    content: '';
+    width: 18px;
+    height: 18px;
+    border: 2px solid transparent;
+    border-top-color: #3c4043;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ========== Disabled State ========== */
+.btn-social:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 576px) {
+    .btn-social {
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+
+    .btn-google-icon {
+        width: 42px;
+        height: 42px;
+    }
+
+    .btn-google-icon .google-icon {
+        width: 20px;
+        height: 20px;
+    }
+}
