@@ -49,6 +49,36 @@ class Product(models.Model):
     is_active = models.BooleanField(default=True)
     objects = ProductQuerySet.as_manager()
 
+    @property
+    def positive_percentage(self):
+        total_reviews = self.reviews.filter(ai_sentiment__isnull=False).count()
+        if total_reviews == 0:
+            return None
+        positive_reviews = self.reviews.filter(ai_sentiment='positive').count()
+        return round((positive_reviews / total_reviews) * 100, 2)
+
+    @property
+    def review_stats(self):
+        reviews = self.reviews.filter(ai_sentiment__isnull=False)
+        total = reviews.count()
+        if total == 0:
+            return {
+                'total': 0,
+                'positive': 0,
+                'negative': 0,
+                'positive_percentage': None,
+                'negative_percentage': None,
+            }
+        positive = reviews.filter(ai_sentiment='positive').count()
+        negative = reviews.filter(ai_sentiment='negative').count()
+        return {
+            'total': total,
+            'positive': positive,
+            'negative': negative,
+            'positive_percentage': round((positive / total) * 100, 2),
+            'negative_percentage': round((negative / total) * 100, 2),
+        }
+
     def save(self, *args, **kwargs):
         if not self.slug:
             base_slug = slugify(self.name)

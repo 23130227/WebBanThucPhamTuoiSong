@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import format_html
 
 from .models import *
 
@@ -12,6 +13,7 @@ class ProductAdmin(admin.ModelAdmin):
         'base_price',
         'available_quantity',
         'sold_quantity',
+        'get_positive_percentage',  # Thêm cột positive %
         'is_active',
         'created_at',
     )
@@ -20,12 +22,69 @@ class ProductAdmin(admin.ModelAdmin):
         'slug',
         'sold_quantity',
         'created_at',
+        'get_review_stats',  # Thêm thống kê vào trang detail
     )
     list_filter = ('category', 'is_active')
     search_fields = ('name',)
 
     def available_quantity(self, obj):
         return obj.get_available_quantity()
+
+    @admin.display(description='Positive %')
+    def get_positive_percentage(self, obj):
+        """Hiển thị phần trăm positive trong danh sách"""
+        percentage = obj.positive_percentage
+        if percentage is None:
+            return format_html('<span style="color: gray;">—</span>')
+
+        if percentage >= 70:
+            color = '#28a745'  # Xanh lá
+            emoji = '🟢'
+        elif percentage >= 40:
+            color = '#ffc107'  # Vàng cam
+            emoji = '🟡'
+        else:
+            color = '#dc3545'  # Đỏ
+            emoji = '🔴'
+
+        # Format số trước khi truyền vào format_html
+        percentage_str = f"{percentage:.1f}%"
+
+        return format_html(
+            '{} <span style="color: {}; font-weight: bold;">{}</span>',
+            emoji,
+            color,
+            percentage_str
+        )
+
+    @admin.display(description='Thống kê đánh giá')
+    def get_review_stats(self, obj):
+        """Hiển thị thống kê chi tiết trong trang detail"""
+        stats = obj.review_stats
+
+        if stats['total'] == 0:
+            return format_html(
+                '<span style="color: gray; font-style: italic;">Chưa có đánh giá nào</span>'
+            )
+
+        # Format số trước
+        positive_pct = f"{stats['positive_percentage'] or 0:.1f}%"
+        negative_pct = f"{stats['negative_percentage'] or 0:.1f}%"
+
+        return format_html(
+            '''
+            <div style="line-height: 1.8; padding: 10px; background: none; border-radius: 5px;">
+                <div><strong>Tổng đánh giá:</strong> {}</div>
+                <div><strong>🟢 Positive:</strong> {} ({})</div>
+                <div><strong>🔴 Negative:</strong> {} ({})</div>
+            </div>
+            ''',
+            stats['total'],
+            stats['positive'],
+            positive_pct,
+            stats['negative'],
+            negative_pct,
+        )
 
 
 @admin.register(ProductBatch)
