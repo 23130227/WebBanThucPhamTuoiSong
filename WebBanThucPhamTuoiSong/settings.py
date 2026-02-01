@@ -217,3 +217,14 @@ OPENROUTER = {
 }
 
 PHOBERT_COLAB_SERVER_URL = os.environ.get('PHOBERT_COLAB_SERVER_URL')
+
+# Bắt buộc dùng HTTPS trong production
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = not DEBUG
+
+# Hoặc cấu hình theo môi trường
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
