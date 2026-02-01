@@ -150,12 +150,12 @@ WSGI_APPLICATION = 'WebBanThucPhamTuoiSong.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASE_URL = os.environ.get('DATABASE_URL')
+POSTGRES_DATABASE_URL = os.environ.get('POSTGRES_DATABASE_URL')
 
-if DATABASE_URL:
+if POSTGRES_DATABASE_URL:
     DATABASES = {
         'default': dj_database_url.config(
-            default=DATABASE_URL,
+            default=POSTGRES_DATABASE_URL,
             conn_max_age=600,
             conn_health_checks=True,
         )
