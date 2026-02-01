@@ -1,3 +1,4 @@
+from cloudinary.models import CloudinaryField
 from django.db import models
 from django.urls import reverse
 
@@ -6,7 +7,7 @@ from django.urls import reverse
 class HomeSlide(models.Model):
     title = models.CharField(max_length=255)
     subtitle = models.CharField(max_length=255, blank=True)
-    background_image = models.ImageField(upload_to='home_slides/')
+    background_image = CloudinaryField('image', folder='home_slides', null=True, blank=True)
     button_text = models.CharField(max_length=100, blank=True, default='Xem chi tiết')
     button_url = models.URLField(blank=True)
     order = models.PositiveIntegerField(default=0)

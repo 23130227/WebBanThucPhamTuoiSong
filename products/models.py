@@ -1,3 +1,4 @@
+from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -43,7 +44,7 @@ class Product(models.Model):
     unit_size = models.PositiveIntegerField(default=500)
     sold_quantity = models.PositiveIntegerField(default=0)
     base_price = models.PositiveIntegerField()
-    image = models.ImageField(upload_to='products/', blank=True, null=True)
+    image = CloudinaryField('image', folder='products', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     objects = ProductQuerySet.as_manager()
