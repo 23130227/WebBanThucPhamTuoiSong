@@ -3,7 +3,7 @@ from django.conf import settings
 
 # URL của server AI trên Colab (cập nhật mỗi khi chạy lại Colab)
 # Nên lưu trong settings.py hoặc biến môi trường
-AI_SERVER_URL = "https://unfoisted-asuncion-nonrelativistic.ngrok-free.dev/"
+AI_SERVER_URL = settings.PHOBERT_COLAB_SERVER_URL
 
 
 def analyze_comment_api(comment_text, timeout=30):

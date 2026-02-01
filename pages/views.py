@@ -1,6 +1,7 @@
 import os
 
 import requests
+from allauth.socialaccount.providers.mediawiki.provider import settings
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -49,13 +50,13 @@ def ai_chat(request):
             response = requests.post(
                 "https://openrouter.ai/api/v1/chat/completions",
                 headers={
-                    "Authorization": f"Bearer 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",
+                    "Authorization": f"Bearer " + settings.OPENROUTER['API_KEY'],
                     "Content-Type": "application/json",
-                    "HTTP-Referer": "http://localhost:8000",  # bắt buộc với OpenRouter
+                    "HTTP-Referer": settings.OPENROUTER['HTTP_REFERER'],  # bắt buộc với OpenRouter
                     "X-Title": "FreshFood AI Chef"
                 },
                 json={
-                    "model": "google/gemini-2.0-flash-001",  # 👉 đổi model tại đây
+                    "model": settings.OPENROUTER['MODEL'],  # 👉 đổi model tại đây
                     "messages": [
                         {"role": "system", "content": system_instruction},
                         {"role": "user", "content": user_message}
@@ -114,6 +115,7 @@ def about_view(request):
 
 def contact_view(request):
     return render(request, 'pages/contact.html', {})
+
 
 def search_results_view(request):
     query = request.GET.get('q', '').strip()
